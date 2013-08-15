@@ -12,6 +12,7 @@ Website
 
 [assemblino.com](http://assemblino.com)
 
+[components and examples](http://assemblino.com/explorer.html)
 
 About
 -------------
@@ -49,8 +50,10 @@ Use the menu File to open some of the built-in components and assembles.
 Dependencies
 -------
 
+Many thanks to the developers of the following libraries.
+
 Javascript libraries:
-dat.GUI, three.js, ThreeCSG, Physi.js, ammo.js, underscore.js, jQuery, jQuery-UI, CodeMirror, markdown.js
+dat.gui, three.js, ThreeCSG, Physi.js, ammo.js, underscore.js, jQuery, jQuery-UI, CodeMirror, markdown.js
 
 Included node modules:
 async, connect-flash,  event,  express,  firmata,  pause,  serialport,  underscore,  util
