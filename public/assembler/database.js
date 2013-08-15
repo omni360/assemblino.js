@@ -186,6 +186,7 @@ ServedDatabase.prototype.requestOnlyDiffs = function (callback) {
             });
         };
         if (toRequest.length) {
+            Assemblino.toggleSymbol(true, "Requesting changed components...");
             _this.requestList(toRequest, processRequested);
         } else {
             processRequested("{}");

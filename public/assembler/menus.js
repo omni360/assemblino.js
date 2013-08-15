@@ -71,14 +71,6 @@ Menu.prototype.updateOptions = function () {
     }
 };
 
-Menu.prototype.toggleSymbol = function (show, message) {
-    if (show) {
-        $("#" + CANVAS_ID).css("background", "transparent");
-    }
-    $("#symbol")[show ? "show" : "hide"]();
-    $("#wait").text(message || "");
-};
-
 Menu.prototype.updateCameraControls = function () {
     if (this.getOption('cameraPosition')) {
         this.simulator.camera.position.copy(Vec3(this.getOption('cameraPosition')));

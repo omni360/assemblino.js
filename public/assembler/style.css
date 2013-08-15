@@ -6,6 +6,11 @@ body {
     font-family: monospace;
 }
 
+#wait {
+    white-space: nowrap;
+    font-size: 100%;
+    margin: 10px;
+}
 #maintenance {
     display: none;
     position: fixed;

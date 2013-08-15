@@ -290,7 +290,7 @@ OperationsManager.prototype.editComponent = function (obj, preCompiledObject) {
     this.servedDatabase.saveInfo('lastEdited', obj.id);
     this.servedDatabase.saveLastEdited(obj.id);
     this.menus.showInfo(this.parseComments(this.editor.getValue()));
-    this.menus.toggleSymbol(false, "");
+    Assemblino.toggleSymbol(false, "");
     this.simulator.stop = false;
 };
 
@@ -435,7 +435,7 @@ OperationsManager.prototype.closeComponent = function (dontAsk) {
         this.releaseObject();
         this.simulator.resetScene();
         this.menus.clearInfo();
-        this.menus.toggleSymbol(true, "");
+        Assemblino.toggleSymbol(true, "Done! Use the menu to open or create new objects.");
         this.simulator.refreshCanvas();
         this.servedDatabase.saveLastEdited("");
     }
@@ -452,7 +452,6 @@ OperationsManager.prototype.deleteComponent = function () {
         this.closeComponent(true);
         this.isLoaded(false);
         this.menus.clearInfo();
-        this.menus.toggleSymbol(true, "");
     }
 };
 
@@ -529,17 +528,19 @@ OperationsManager.prototype.autoLoad = function () {
     var dependencies = uriParameter('dependencies');
     if (dependencies) {
         if (Assemblino.database.getUsername()){
+            Assemblino.toggleSymbol(true, "Forcing logout...");
             Assemblino.database.sessionInfo.user = "";
             jQuery.ajax("/logout.html", {
                 cache: false,
                 type: 'GET',
                 success: function(){
-                    notify('To inspect shared components you were automatically logged you out as a security procedure.');
+                    notify('To inspect shared components you were automatically logged out as a normal security procedure.\n\nThis window wil reload.');
                     window.location.reload();
                 }
             });
             return;
         }
+        Assemblino.toggleSymbol(true, "Fetching dependencies...");
         jQuery.ajax("/show/" + dependencies + ".json", {
             cache: false,
             type: 'GET',
@@ -550,6 +551,7 @@ OperationsManager.prototype.autoLoad = function () {
     }
     function process(json) {
         if (json){
+            Assemblino.toggleSymbol(true, "Including contributor's components...");
             _.map(json, function(o,i){
                 if (!Assemblino.database.get(o.id)) {
                     Assemblino.database.set(o);
@@ -559,11 +561,12 @@ OperationsManager.prototype.autoLoad = function () {
         }
         var obj = Assemblino.database.get(id) ||  Assemblino.database.getByName(id);
         if (obj) {
+            Assemblino.toggleSymbol(true, "Preparing to build and render object...");
             Assemblino.manager.editComponent(obj);
-            Assemblino.menus.toggleSymbol(false, "");
+            Assemblino.toggleSymbol(false, "");
         } else {
             Assemblino.menus.toggleUserUXControls(false);
-            Assemblino.menus.toggleSymbol(true, "Done!");
+            Assemblino.toggleSymbol(true, "Done! Use the menu to open or create new objects.");
         }
     }
 };
