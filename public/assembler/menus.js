@@ -223,10 +223,20 @@ Menu.prototype.makePublic = function () {
         data = temporaryCanvas.toDataURL();
         $(temporaryImage).remove();
         $(temporaryCanvas).remove();
+        var dependencies = _.compact(_.map(Assemblino.manager.getOption('dependencies'), function(dname){
+            var obj = Assemblino.database.getByName(dname);
+            if (Assemblino.database.userIsPublic(obj.username)){
+                return undefined;
+            } else {
+                return obj.id;
+            }
+        }));
+        dependencies.push(Assemblino.manager.getObjectId());
         Assemblino.database.makePublic({
             picture: data,
             time: formatedTime(),
             id: Assemblino.manager.getObjectId(),
+            dependencies: dependencies,
             name: Assemblino.manager.getObjectName(),
             parameters: Assemblino.manager.object.getOptions(),
             path: (Assemblino.manager.owner || "") + "/" + Assemblino.manager.getOption('folder') + "/" + Assemblino.manager.getObjectName(),
@@ -905,7 +915,7 @@ Menu.prototype.addSettingsControls = function (sim) {
             }
         }
     );
-    if (Assemblino.database.getUsername() && Assemblino.database.userIsPublic() && !DESKTOP_OPTIONS.enabled) {
+    if (Assemblino.database.getUsername() && isChrome() && !DESKTOP_OPTIONS.enabled) {
         organ.add({'Share': function () {
             _this.makePublic();
         }}, 'Share');

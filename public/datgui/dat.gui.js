@@ -11,6 +11,16 @@
  * http://www.apache.org/licenses/LICENSE-2.0
  */
 
+/**
+ * This file was changed by Nuno Rocha, 2013
+ * 
+ * - Added jQuery methods to manage events, in order to clean some leaks
+ * - A lot of CSS was isolated to a proper file, instead of being mixed with javascript
+ * - Some other small changes.
+ *
+ */
+
+
 /** @namespace */
 var dat = dat || {};
 

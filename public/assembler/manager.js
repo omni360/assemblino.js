@@ -182,7 +182,7 @@ OperationsManager.prototype.parseComments = function (obj) {
     if (typeof obj === 'string') {
         info = obj;
     } else {
-        if (typeof obj !== 'object'){
+        if (typeof obj !== 'object') {
             obj = this.servedDatabase.get(obj) || this.servedDatabase.getByName(obj);
         }
         if (!obj) return "";
@@ -230,7 +230,7 @@ OperationsManager.prototype.failureReport = function () {
 
 OperationsManager.prototype.editComponent = function (obj, preCompiledObject) {
     if (!obj) return;
-    if (preCompiledObject === undefined && this.servedDatabase.updateObjectFromDesktopFile(obj)){
+    if (preCompiledObject === undefined && this.servedDatabase.updateObjectFromDesktopFile(obj)) {
         return;
     }
     var _this = this;
@@ -245,7 +245,7 @@ OperationsManager.prototype.editComponent = function (obj, preCompiledObject) {
     this.editor.object = obj;
     TRACKER.clear(obj.name);
     resetNextInt();
-    if (preCompiledObject===undefined){
+    if (preCompiledObject === undefined) {
         preCompiledObject = codeObject(obj.code, null, obj.name);
     }
     if (preCompiledObject) {
@@ -276,7 +276,7 @@ OperationsManager.prototype.editComponent = function (obj, preCompiledObject) {
     this.last_change = obj.last_change;
     this.normalizePointer();
     this.menus.updateOptions();
-    if(preCompiledObject) {
+    if (preCompiledObject) {
         preCompiledObject.addToScene(this.simulator,
             function () {
                 _this.simulator.runProgram = !!_this.getOption('autoStart');
@@ -390,11 +390,11 @@ OperationsManager.prototype.newComponent = function (type) {
         settings.options.codeEditor = true;
         settings.options.renderInterval = 250;
         settings.options.simulationQuality = 2;
-    } else if (type == 'System'){
+    } else if (type == 'System') {
         settings.options.codeEditor = true;
         settings.options.renderInterval = 200;
         settings.options.simulationQuality = 5;
-    } else if (type == 'Assemble'){
+    } else if (type == 'Assemble') {
         settings.options.codeEditor = false;
         settings.options.renderInterval = 150;
         settings.options.simulationQuality = 10;
@@ -499,7 +499,7 @@ OperationsManager.prototype.updateContentOptions = function () {
 };
 
 OperationsManager.prototype.updateAllControllerOptions = function () {
-    var relevant = ['isEnabled','rpm','angle','position']; //this declaration should be somewhere in actuators.js
+    var relevant = ['isEnabled', 'rpm', 'angle', 'position']; //this declaration should be somewhere in actuators.js
     var _this = this;
     var fixedConnectors = _.filter(Assemblino.simulator.connectors, function (c) {
         return c.isConnected && c.isFixed;
@@ -526,13 +526,45 @@ var lastSettings = {};
 
 OperationsManager.prototype.autoLoad = function () {
     var id = uriParameter('id') || uriParameter('name') || this.localDatabase.lastEdited || this.servedDatabase.getInfo('lastEdited');
-    var obj = this.servedDatabase.get(id) || this.servedDatabase.getByName(id);
-    if (obj) {
-        this.editComponent(obj);
-        Assemblino.menus.toggleSymbol(false, "");
+    var dependencies = uriParameter('dependencies');
+    if (dependencies) {
+        if (Assemblino.database.getUsername()){
+            Assemblino.database.sessionInfo.user = "";
+            jQuery.ajax("/logout.html", {
+                cache: false,
+                type: 'GET',
+                success: function(){
+                    notify('To inspect shared components you were automatically logged you out as a security procedure.');
+                    window.location.reload();
+                }
+            });
+            return;
+        }
+        jQuery.ajax("/show/" + dependencies + ".json", {
+            cache: false,
+            type: 'GET',
+            success: process
+        });
     } else {
-        this.menus.toggleUserUXControls(false);
-        Assemblino.menus.toggleSymbol(true, "Done!");
+        process(null);
+    }
+    function process(json) {
+        if (json){
+            _.map(json, function(o,i){
+                if (!Assemblino.database.get(o.id)) {
+                    Assemblino.database.set(o);
+                    Assemblino.menus.addComponentToGui(o);
+                }
+            });
+        }
+        var obj = Assemblino.database.get(id) ||  Assemblino.database.getByName(id);
+        if (obj) {
+            Assemblino.manager.editComponent(obj);
+            Assemblino.menus.toggleSymbol(false, "");
+        } else {
+            Assemblino.menus.toggleUserUXControls(false);
+            Assemblino.menus.toggleSymbol(true, "Done!");
+        }
     }
 };
 
@@ -547,7 +579,7 @@ OperationsManager.prototype.insertComponentAsChild = function (obj) {
     //this forces the name to be the first item
     var settings = _.extend({name: ""}, lastSettings[obj.name] || o.getOptions() || {});
     settings.name = nextName(settings.name || obj.name);
-    while(_this.hasObject(settings.name, _this.getObjectName())) {
+    while (_this.hasObject(settings.name, _this.getObjectName())) {
         settings.name = nextName(settings.name);
     }
     _.map(o.getSettings(), function (v, k) {
@@ -599,7 +631,7 @@ OperationsManager.prototype.cloneComponent = function (name) {
     var objectConstructor = _this.content.declarations[name].object;
     var obj = this.servedDatabase.getByName(objectConstructor);
     settings.name = nextName(settings.name || obj.name);
-    while(_this.hasObject(settings.name, _this.getObjectName())) {
+    while (_this.hasObject(settings.name, _this.getObjectName())) {
         settings.name = nextName(settings.name);
     }
     var o = codeObject(obj.code, null, obj.name);
@@ -657,6 +689,7 @@ OperationsManager.prototype.updateOnSceneComponent = function (key) {
         }
     });
     var oldName = settings.name;
+
     function updateComponent() {
         var newSettings = _this.menus.popMenuValues(settings);
         var chosenName = newSettings.name;
@@ -708,7 +741,7 @@ OperationsManager.prototype.changeConnection = function (fixed, moved, type) {
     settings = _.defaults(settings, defaults);
     settings = _.pick(settings, 'name', 'type', _.keys(defaults));
     _.defaults(settings, {name: nextName('CONTROL')});
-    while (this.hasObject(settings.name, this.getObjectName())){
+    while (this.hasObject(settings.name, this.getObjectName())) {
         settings.name = nextName(settings.name);
     }
     var types = _.intersection(fixed.options.accept, moved.options.accept, Assemblino.actuators.getConstraintKeys());
@@ -718,7 +751,7 @@ OperationsManager.prototype.changeConnection = function (fixed, moved, type) {
         settings = Assemblino.menus.popMenuValues(settings);
         var curName = fixed.controller.settings.options.name;
         var newName = settings.name;
-        if (curName!=newName && _this.object.getController(newName)){
+        if (curName != newName && _this.object.getController(newName)) {
             notify('The controller name ' + newName + ' is taken. Please choose other one.');
             return;
         }
@@ -759,6 +792,6 @@ _.extend(OperationsManager.prototype, _.pick(Assemble.prototype, [
     'declarationCode', 'physicCode', 'connectCode', 'connectStateCode',
     'removeConnectionsToOrFrom',
     'hasObject', 'renameKey', 'insert', 'makeKey',
-    'appendConnectOperation','removeConnectOperation','getConnectOperation'
+    'appendConnectOperation', 'removeConnectOperation', 'getConnectOperation'
 ]));
 

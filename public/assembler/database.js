@@ -17,8 +17,8 @@ function ServedDatabase(staticComponents) {
     };
     this.localDatabase = {};
     this.publicUsers = [
-        'public', 'Public', 'Vendor', 'Commercial', 'Store', 'Shop', 'Database', 'Abstract', 'Components', 'Basic', 'Geometry',
-        'Learning', 'Tutorials', 'Examples', 'Demos', 'Assembler', 'Assemblino', 'Tests', 'Trash', 'Robots'
+        'public','Public','Vendor','Commercial','Store','Shop','Database','Abstract','Components','Basic','Geometric',
+        'Learning','Tutorial','Tutorials','Example','Examples', 'Demos','Assembler','Assemblino','Tests','Trash','Robots','Desktop','Local','Server'
     ];
 }
 
@@ -300,8 +300,8 @@ ServedDatabase.prototype.getUsername = function () {
     return this.sessionInfo.user;
 };
 
-ServedDatabase.prototype.userIsPublic = function () {
-    return this.publicUsers.indexOf(this.sessionInfo.user) > -1;
+ServedDatabase.prototype.userIsPublic = function (user) {
+    return this.publicUsers.indexOf(user || this.sessionInfo.user) > -1;
 };
 
 ServedDatabase.prototype.isDesktopFile = function (name) {

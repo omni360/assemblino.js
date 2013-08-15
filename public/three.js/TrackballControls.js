@@ -2,6 +2,11 @@
  * @author Eberhard Graether / http://egraether.com/
  */
 
+/**
+ * Some small changes by Nuno Rocha, 2013
+ *
+ */
+
 //uses global variable IS_DRAGGING
 
 THREE.TrackballControls = function ( object, domElement ) {
