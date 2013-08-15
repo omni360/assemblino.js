@@ -1,0 +1,490 @@
+body {
+    background-color: white; /*#ecf0f1;*/
+    font-size: 11px;
+    margin: 0px;
+    padding: 0px;
+    font-family: monospace;
+}
+
+#maintenance {
+    display: none;
+    position: fixed;
+    top: 1%;
+    left: 1%;
+    z-index: 999;
+    width: 10%;
+}
+
+#videoImage, #monitor {
+    z-index: -99;
+    float: left;
+    visibility: hidden;
+    float: left;
+}
+#scenecanvas {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: -10;
+}
+
+#uploader {
+    visibility: hidden;
+}
+
+#popmenu:hover, #footinfo:hover, #CodeWrapper:hover {
+    z-index: 6;
+}
+
+#popmenu {
+    display: none;
+    position: absolute;
+    top: 15%;
+    left: 25%;
+    max-width: 50%;
+    min-height: 100px;
+    background-color: #000000;
+    border: 1px solid white;
+    z-index: 4;
+}
+
+#poptitle {
+    display: block;
+    background-color: transparent;
+    color: #eeeeee;
+    width: 90%;
+    margin: 20px 20px 0px 20px;
+}
+
+#popgui {
+    position: relative;
+    display: block;
+    float: left;
+    margin: 10px 20px;
+}
+
+#popinfo {
+    position: relative;
+    display: block;
+    float: left;
+    background-color: transparent;
+    color: #eeeeee;
+    margin: 10px 20px;
+    width: 90%;
+}
+
+#footinfo {
+    display: none;
+    position: fixed;
+    z-index: 3;
+    bottom: 0px;
+    right: 0px;
+    background-color: black;
+    color: #eeeeee;
+    padding: 20px;
+    border-top-left-radius: 4px;
+    max-width: 30%;
+    max-height: 30%;
+    overflow: auto;
+    font-family: Arial;
+    font-size: 13px;
+}
+
+#footinfo:hover {
+    cursor: pointer;
+}
+
+#werbung {
+    z-index: 1;
+    height: 25px;
+    background-color: transparent;
+    float: left;
+}
+
+#symbol{
+    position: absolute;
+    left: 40%;
+    top: 40%;
+    z-index: 0;
+    font-size: 200%;
+}
+
+#editorcontrols {
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: white;
+    background-color: transparent;
+    font-size: 1.2em;
+    padding: 0px 0px 0px 2px;
+}
+
+#editing, #status, #assembleruser, #assemblerlogout, .inheader {
+    font-size: 150%;
+    background-color: transparent;
+    margin: 4px 24px 4px 4px;
+    text-decoration: none;
+}
+
+.inheader {
+    float: left;
+}
+
+#editing {
+    float: left;
+    color: gray;
+}
+
+#editingname {
+    color: #2980b9;
+}
+
+#status {
+    float: left;
+    color: #c0392b;
+}
+
+#assembleruser {
+    float: left;
+    color: #2980b9;
+}
+
+#assemblerlogout {
+    float: right;
+}
+
+#assemblerlogout > a {
+    text-decoration: none;
+}
+
+.white {
+    color: white;
+}
+
+.gray {
+    color: gray;
+}
+
+.blue {
+    color: #2980b9;
+}
+
+.red {
+    color: #c0392b;
+}
+
+.hidden {
+    display: none;
+}
+
+.editorbutton {
+    position: relative;
+    color: white;
+    background: transparent;
+    font-size: 0.8em;
+    padding: 1px 2px;
+    margin-left: 3px;
+    top: 2px;
+    height: 8px;
+}
+
+.editorbutton:hover{
+    cursor: pointer;
+}
+
+#menucontainer {
+    position: absolute;
+    left: 0;
+    top: 30px;
+    width: 100%;
+    background-color: #2c3e50;
+    z-index: 5;
+    height: 18px;
+}
+
+#menucontainer > * {
+    float: left;
+    margin: 0px -70px 0px 0px;
+}
+
+#interaction {
+    float: right;
+    margin-right: 0px;
+}
+
+#CodeWrapper {
+    display: none;
+    z-index: 1;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 50%;
+    border-top: 1px solid gray;
+    border-right: 1px solid gray;
+    height: 35%;
+    padding-right: 0px;
+    padding-top: 21px;
+    background-color: #2c3e50; /*rgba(38,38,38,1);*/
+    opacity: 0.97;
+}
+
+.CodeMirror {
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+}
+
+
+#header {
+    width: 100%;
+    background-color: rgba(0,0,0,1);
+    height: 30px;
+}
+
+#menu {
+    overflow: auto;
+    width: 100%;
+    min-height: 17px;
+    background-color: #2c3e50;
+}
+
+#webheader {
+    margin: 0px;
+    width: 100%;
+    background-color: #000000;
+    padding: 20px 0px;
+}
+
+#webheadercenter {
+    overflow: auto;
+    margin: 0px auto 0px auto;
+    width: 90%;
+    max-width: 840px;
+    background-color: inherit;
+}
+
+#webmenu {
+    overflow: auto;
+    margin: auto;
+    width: 100%;
+    background-color: #2c3e50;
+}
+
+#webmenucenter {
+    overflow: auto;
+    margin: auto;
+    width: 90%;
+    max-width: 840px;
+    min-height: 17px;
+    background-color: inherit;
+}
+
+#browserStatus table{
+    border: 1px solid black;
+    margin: 10px 10px 10px 0px;
+    font-size: 90%;
+    width: 376px;
+    height: 106px;
+}
+#browserStatus  td {
+    padding-left: 10px;
+}
+
+#content, #copyright {
+    font-family: Arial;
+    font-size: 13px;
+    word-wrap:break-word;
+    padding: 1%;
+    margin: auto;
+    width: 90%;
+    max-width: 840px;
+}
+
+.when-supported {
+    display: none;
+}
+
+#logowebsite {
+    margin: 2px auto auto 1px;
+    float: left;
+    width: 40px;
+    height: 40px;
+}
+
+#logo {
+    margin: 2px 1px 1px 4px;
+    float: left;
+    width: 25px;
+    height: 25px;
+}
+
+[title=Assemblino], [title=Registration] {
+    display: none;
+    text-align: center;
+    padding: 5px 10px 6px 10px;
+    border-radius: 15px;
+    border-bottom: 1px solid black;
+    border-right: 1px solid black;
+    text-decoration: none;
+    background-color: #154415;
+    color: white;
+    font-size: 120%;
+}
+
+[title=Assemblino]:hover, [title=Registration]:hover {
+    cursor: pointer;
+    color: #dddddd;
+}
+
+#website-name {
+    float: left;
+    color: white;
+    font-size: 150%;
+    margin: 4px;
+    text-decoration: none;
+}
+
+.inheader-web {
+    display: block;
+    float: left;
+    font-size: 150%;
+    background-color: transparent;
+    text-decoration: none;
+    margin: 12px 6px 6px 12px;
+}
+
+#webdescription, #robots {
+    float: left;
+}
+
+.menu-item, .assembler-link {
+    text-align: center;
+    margin-right: 30px;
+    float: left;
+    padding: 2px;
+    text-decoration: none;
+    text-align: left;
+    color: #f0f0f0;
+    font-family: Arial;
+    font-size: 120%;
+}
+
+.menu-item:hover, .assembler-link:hover {
+    cursor: pointer;
+    color: #cccccc;
+}
+
+#user {
+    font-style: italic;
+    display: none;
+}
+
+#projects {
+    display: none;
+}
+
+.error {
+    color: #c0392b;
+}
+
+.news-item {
+    width: 96%;
+    margin: 2%;
+    min-height: 100px;
+}
+
+.clickable {
+    text-decoration:underline;
+}
+
+.clickable:hover {
+    cursor:pointer;
+}
+
+form label, form input {
+    display: block;
+}
+
+#terms, [for=terms] {
+    display: inline-block;
+}
+
+#temporaryCanvas, #temporaryImage{
+    display: none;
+}
+
+.userCreation {
+    padding: 1%;
+}
+
+.userImage {
+    float: left;
+    margin: 2% 0% 2% 0%;
+}
+
+.userParameters {
+    float: left;
+    font-style: italic;
+    margin: 2% 0% 2% 2%;
+}
+
+.userText {
+    float: left;
+    margin: 1% 0% 1% 0%;
+    max-width: 512px;
+    min-width: 80%;
+}
+.userParameters  th {
+    text-align: left;
+    padding-left: 10px;
+}
+
+.userParameters  td {
+    padding-left: 10px;
+}
+
+.assemblinoIdLink {
+    display: none;
+    float: left;
+    margin: 1% 0% 1% 0%;
+    min-width: 80%;
+}
+
+#componentsList {
+    float: left;
+    overflow: visible;
+    z-index: 10;
+    background-color: #eeeeee;
+    padding: 5px;
+    min-width: 200px;
+}
+
+#componentContent {
+    float: left;
+    z-index: 9;
+    margin-left: 15px;
+    max-width: 600px
+}
+
+#componentsList ul {
+    list-style-type: none;
+    white-space:nowrap;
+    padding-left: 5px;
+}
+
+#componentsList span:hover {
+    cursor: pointer;
+}
+
+#componentsList {
+    white-space:nowrap;
+}
+
+.listLink{
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.listLink:hover{
+    cursor: pointer;
+}

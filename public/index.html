@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>assemblino.com</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link type="text/css" rel="stylesheet" href="static/jquery/jquery-ui-1.10.2.custom.css">
+    <link type="text/css" rel="stylesheet" href="static/codemirror/codemirror.css">
+    <link type="text/css" rel="stylesheet" href="static/codemirror/lesser-dark.css">
+    <link type="text/css" rel="stylesheet" href="datgui/datgui.css">
+    <link type="text/css" rel="stylesheet" href="assembler/style.css">
+
+
+</head>
+<body>
+<div id="header">
+    <img id="logo" src="static/images/logo-2.png" height="25" />
+    <a id="website-name" href="/">assemblino.com</a>
+    <div id="assembleruser" ></div>
+    <div id="editing" ></div>
+    <div id="status" ></div>
+    <div id="assemblerlogout"></div>
+</div>
+<div id="menucontainer">
+</div>
+<div id="container">
+    <div id="symbol">
+        <img id="wait-logo" src="static/images/logo-2.png" height="155" />
+        <h1 id="wait">Loading...</h1>
+    </div>
+    <div id="CodeWrapper">
+    </div>
+</div>
+<div id="popmenu">
+    <div id="poptitle"></div>
+</div>
+<div id="footinfo">
+</div>
+<input type="file" id="uploader" />
+
+<!--dom manipulation, utilities-->
+<script type="text/javascript" src="static/jquery/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="static/jquery/jquery-ui-1.10.2.custom.js"></script>
+<script type="text/javascript" src="static/underscore.js"></script>
+
+<!--three.js-->
+<script type="text/javascript" src="three.js/three.min.js"></script>
+<script type="text/javascript" src="three.js/ConvexGeometry.js"></script>
+<script type="text/javascript" src="three.js/TrackballControls.js"></script>
+<script type="text/javascript" src="three.js/ThreeCSG.js"></script>
+<script type="text/javascript" src="three.js/Detector.js"></script>
+<!-- Physijs -->
+<script type="text/javascript" src="Physijs/physi.js"></script>
+<!--codemirror-->
+<script type="text/javascript" src="static/codemirror/codemirror.js"></script>
+<script type="text/javascript" src="static/codemirror/matchbrackets.js"></script>
+<script type="text/javascript" src="static/codemirror/continuecomment.js"></script>
+<script type="text/javascript" src="static/codemirror/javascript.js"></script>
+<!-- dat.gui-->
+<script type="text/javascript" src="datgui/dat.gui.js"></script>
+<!--assembler-->
+<script type="text/javascript" src="cbundle/_public.js"></script>
+<script type="text/javascript" src="assembler/ajax.js"></script>
+<script type="text/javascript" src="assembler/utils.js"></script>
+<script type="text/javascript" src="assembler/scenarios.js"></script>
+<script type="text/javascript" src="assembler/simulator.js"></script>
+<script type="text/javascript" src="assembler/geometry.js"></script>
+<script type="text/javascript" src="assembler/materials.js"></script>
+<script type="text/javascript" src="assembler/objects.js"></script>
+<script type="text/javascript" src="assembler/sensors.js"></script>
+<script type="text/javascript" src="assembler/actuators.js"></script>
+<script type="text/javascript" src="assembler/controller.js"></script>
+<script type="text/javascript" src="assembler/connector.js"></script>
+<script type="text/javascript" src="assembler/manager.js"></script>
+<script type="text/javascript" src="assembler/manager-templates.js"></script>
+<script type="text/javascript" src="assembler/menus.js"></script>
+<script type="text/javascript" src="assembler/localdata.js"></script>
+<script type="text/javascript" src="assembler/database.js"></script>
+<script type="text/javascript" src="assembler/arduino.js"></script>
+<script type="text/javascript" src="assembler/development.js"></script>
+<script type="text/javascript" src="assembler/main.js"></script>
+<script type="text/javascript" src="tests/tester.js"></script>
+<script id="devScript" type="text/javascript"></script>
+</body>
+</html>
