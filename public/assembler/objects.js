@@ -93,7 +93,7 @@ Program.prototype.matchedCombinations = function (keysDownList, keysUpList, mous
                 //click on defined object ex:"*myPart", "*mySystem", "*myAssemble"
                 if (mouseObj.partKey && mouseObj.partKey === quantifierChar[1]) return true;
                 //object is not defined, referring to the self ex:"*" or any part or children contained
-                if (mouseObj.partKey && !quantifierChar[1] && (obj.containsPath(mouseObj.partPath) || obj === Assemblino.manager.object)) return true;
+                if (mouseObj.partKey && !quantifierChar[1] && (obj.containsPath(mouseObj.partPath) || obj === Assembler.manager.object)) return true;
                 //otherwise
                 return false;
             } else {
@@ -695,7 +695,7 @@ System.prototype.makeKey = function (declaration, name) {
 System.prototype.insert = function (name, constructor, options) {
     options = _.clone(options || {});
     options['name'] = name;
-    var obj = Assemblino.objects[constructor];
+    var obj = Assembler.objects[constructor];
     if (obj) {
         obj = obj(options);
         this.add(obj);
@@ -1023,7 +1023,7 @@ Assemble.prototype.compile = function (program) {
         assemble.isCompiled = true;
         //get the program from source
         if (!program) {
-            var obj = Assemblino.database.getByName(this.databaseName);
+            var obj = Assembler.database.getByName(this.databaseName);
             if (obj) {
                 program = JSON.parse(obj.settings).program;
             }

@@ -399,7 +399,7 @@ window.Physijs = (function () {
                     arguments[0].constraint = _this.id;
                     _this.scene.execute(_this.type + '_' + fun, arguments[0]);
                 } else {
-                    Assemblino.actuators.getConstraintConstructor(_this.type).prototype[fun].apply(_this, arguments);
+                    Assembler.actuators.getConstraintConstructor(_this.type).prototype[fun].apply(_this, arguments);
                 }
             }
         });

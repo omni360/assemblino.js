@@ -2,7 +2,7 @@ var tester = new Tester();
 tester.pushTest(
     'Testing defined components in the database',
     function () {
-        _.map(Assemblino.objects, function (fun, key) {
+        _.map(Assembler.objects, function (fun, key) {
             console.log(key, 'starting test');
             TRACKER.clear("-");
             try {

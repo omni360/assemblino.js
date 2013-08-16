@@ -235,7 +235,7 @@ OperationsManager.prototype.editComponent = function (obj, preCompiledObject) {
     }
     var _this = this;
     _this.simulator.runProgram = false;
-    Assemblino.arduino.clean();
+    Assembler.arduino.clean();
     this.settings(obj.settings);
     this.menus.clearPopMenu();
     this.menus.clearConstraintsGUI();
@@ -243,14 +243,15 @@ OperationsManager.prototype.editComponent = function (obj, preCompiledObject) {
     this.simulator.resetScene();
     this.simulator.connectorRadius = this.options.connectorRadius || 0.5;
     this.editor.object = obj;
-    TRACKER.clear(obj.name);
     resetNextInt();
     if (preCompiledObject === undefined) {
+        TRACKER.clear(obj.name);
         preCompiledObject = codeObject(obj.code, null, obj.name);
     }
     if (preCompiledObject) {
         if (preCompiledObject instanceof Assemble) {
             if (!preCompiledObject.isCompiled) {
+                TRACKER.clear(obj.name);
                 preCompiledObject = preCompiledObject.compile(this.program);
             }
             this.editor.setValue(this.program);
@@ -290,24 +291,25 @@ OperationsManager.prototype.editComponent = function (obj, preCompiledObject) {
     this.servedDatabase.saveInfo('lastEdited', obj.id);
     this.servedDatabase.saveLastEdited(obj.id);
     this.menus.showInfo(this.parseComments(this.editor.getValue()));
-    Assemblino.toggleSymbol(false, "");
+    Assembler.toggleSymbol(false, "");
     this.simulator.stop = false;
 };
 
 OperationsManager.prototype.redraw = function (o) {
     var _this = this;
     _this.simulator.runProgram = false;
-    Assemblino.arduino.clean();
+    Assembler.arduino.clean();
     this.menus.clearPopMenu();
     this.menus.clearConstraintsGUI();
-    TRACKER.clear(this.getObjectName());
     this.releaseObject();
     this.simulator.clearObject();
     //resetNextInt();
     if (!o) {
+        TRACKER.clear(this.getObjectName());
         o = codeObject(this.code, null, this.getObjectName());
     }
     if ((o instanceof Assemble) && !o.isCompiled) {
+        TRACKER.clear(this.getObjectName());
         o = o.compile(this.program);
     }
     this.setObject(o);
@@ -408,7 +410,7 @@ OperationsManager.prototype.newComponent = function (type) {
         'Part': _this.partTemplate
     }[type].call(this, name);
     var obj = this.servedDatabase.insertComponent(name, code || "", JSON.stringify(settings), undefined, Date.now());
-    this.servedDatabase.defineObject(obj.name, Assemblino.objects);
+    this.servedDatabase.defineObject(obj.name, Assembler.objects);
     this.menus.addComponentToGui(obj);
     this.editComponent(obj);
     this.saveComponent();
@@ -435,7 +437,7 @@ OperationsManager.prototype.closeComponent = function (dontAsk) {
         this.releaseObject();
         this.simulator.resetScene();
         this.menus.clearInfo();
-        Assemblino.toggleSymbol(true, "Done! Use the menu to open or create new objects.");
+        Assembler.toggleSymbol(true, "Done! Use the menu to open or create new objects.");
         this.simulator.refreshCanvas();
         this.servedDatabase.saveLastEdited("");
     }
@@ -500,7 +502,7 @@ OperationsManager.prototype.updateContentOptions = function () {
 OperationsManager.prototype.updateAllControllerOptions = function () {
     var relevant = ['isEnabled', 'rpm', 'angle', 'position']; //this declaration should be somewhere in actuators.js
     var _this = this;
-    var fixedConnectors = _.filter(Assemblino.simulator.connectors, function (c) {
+    var fixedConnectors = _.filter(Assembler.simulator.connectors, function (c) {
         return c.isConnected && c.isFixed;
     });
     var topLevelFixedConnectors = _.filter(fixedConnectors, function (fixed) {
@@ -527,9 +529,9 @@ OperationsManager.prototype.autoLoad = function () {
     var id = uriParameter('id') || uriParameter('name') || this.localDatabase.lastEdited || this.servedDatabase.getInfo('lastEdited');
     var dependencies = uriParameter('dependencies');
     if (dependencies) {
-        if (Assemblino.database.getUsername()){
-            Assemblino.toggleSymbol(true, "Forcing logout...");
-            Assemblino.database.sessionInfo.user = "";
+        if (Assembler.database.getUsername()){
+            Assembler.toggleSymbol(true, "Forcing logout...");
+            Assembler.database.sessionInfo.user = "";
             jQuery.ajax("/logout.html", {
                 cache: false,
                 type: 'GET',
@@ -540,7 +542,7 @@ OperationsManager.prototype.autoLoad = function () {
             });
             return;
         }
-        Assemblino.toggleSymbol(true, "Fetching dependencies...");
+        Assembler.toggleSymbol(true, "Fetching dependencies...");
         jQuery.ajax("/show/" + dependencies + ".json", {
             cache: false,
             type: 'GET',
@@ -551,22 +553,22 @@ OperationsManager.prototype.autoLoad = function () {
     }
     function process(json) {
         if (json){
-            Assemblino.toggleSymbol(true, "Including contributor's components...");
+            Assembler.toggleSymbol(true, "Including contributor's components...");
             _.map(json, function(o,i){
-                if (!Assemblino.database.get(o.id)) {
-                    Assemblino.database.set(o);
-                    Assemblino.menus.addComponentToGui(o);
+                if (!Assembler.database.get(o.id)) {
+                    Assembler.database.set(o);
+                    Assembler.menus.addComponentToGui(o);
                 }
             });
         }
-        var obj = Assemblino.database.get(id) ||  Assemblino.database.getByName(id);
+        var obj = Assembler.database.get(id) ||  Assembler.database.getByName(id);
         if (obj) {
-            Assemblino.toggleSymbol(true, "Preparing to build and render object...");
-            Assemblino.manager.editComponent(obj);
-            Assemblino.toggleSymbol(false, "");
+            Assembler.toggleSymbol(true, "Preparing to build and render object...");
+            Assembler.manager.editComponent(obj);
+            Assembler.toggleSymbol(false, "");
         } else {
-            Assemblino.menus.toggleUserUXControls(false);
-            Assemblino.toggleSymbol(true, "Done! Use the menu to open or create new objects.");
+            Assembler.menus.toggleUserUXControls(false);
+            Assembler.toggleSymbol(true, "Done! Use the menu to open or create new objects.");
         }
     }
 };
@@ -740,18 +742,18 @@ OperationsManager.prototype.changeConnection = function (fixed, moved, type) {
     var connDef = _this.getConnectOperation(fixed, moved);
     var settings = _.clone(connDef.controllerOptions);
     type = type || settings.type;
-    var defaults = Assemblino.actuators.getDefaults(type) || {};
+    var defaults = Assembler.actuators.getDefaults(type) || {};
     settings = _.defaults(settings, defaults);
     settings = _.pick(settings, 'name', 'type', _.keys(defaults));
     _.defaults(settings, {name: nextName('CONTROL')});
     while (this.hasObject(settings.name, this.getObjectName())) {
         settings.name = nextName(settings.name);
     }
-    var types = _.intersection(fixed.options.accept, moved.options.accept, Assemblino.actuators.getConstraintKeys());
+    var types = _.intersection(fixed.options.accept, moved.options.accept, Assembler.actuators.getConstraintKeys());
     types = _.without(types, type);
     settings.type = [type].concat(types.sort());
     var updateComponent = function () {
-        settings = Assemblino.menus.popMenuValues(settings);
+        settings = Assembler.menus.popMenuValues(settings);
         var curName = fixed.controller.settings.options.name;
         var newName = settings.name;
         if (curName != newName && _this.object.getController(newName)) {
@@ -759,7 +761,7 @@ OperationsManager.prototype.changeConnection = function (fixed, moved, type) {
             return;
         }
         fixed.controller.settings.options = settings;
-        Assemblino.menus.clearPopMenu();
+        Assembler.menus.clearPopMenu();
         connDef.controllerOptions = settings;
         _this.saveAllPositions();
         _this.updateValueAndHistory();
@@ -768,12 +770,12 @@ OperationsManager.prototype.changeConnection = function (fixed, moved, type) {
     var title = 'Change Connection: '
         + moved.parentPartKey() + ".[" + moved.getKey() + "] to "
         + fixed.parentPartKey() + ".[" + fixed.getKey() + "]";
-    Assemblino.menus.makePopMenu({
+    Assembler.menus.makePopMenu({
         title: title,
         content: settings,
         buttons: {
             Cancel: function () {
-                Assemblino.menus.clearPopMenu();
+                Assembler.menus.clearPopMenu();
             },
             Save: updateComponent
         },
@@ -785,7 +787,7 @@ OperationsManager.prototype.changeConnection = function (fixed, moved, type) {
                 }, 0);
             }
         },
-        info: Assemblino.actuators.getInfo(type)
+        info: Assembler.actuators.getInfo(type)
     });
 };
 

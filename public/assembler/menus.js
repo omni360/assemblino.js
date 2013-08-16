@@ -188,6 +188,10 @@ Menu.prototype.showGUI = function () {
 };
 
 Menu.prototype.makePublic = function () {
+    if (!Assembler.manager.object) {
+        notify('Object is not ready to publish.');
+        return;
+    }
     if (!confirm('This will generate a link to share this object. \n\nContinue?')) return;
     var canvas = document.getElementById(CANVAS_ID);
     canvas.getContext("experimental-webgl", {preserveDrawingBuffer: true});
@@ -215,34 +219,56 @@ Menu.prototype.makePublic = function () {
         data = temporaryCanvas.toDataURL();
         $(temporaryImage).remove();
         $(temporaryCanvas).remove();
-        var dependencies = _.compact(_.map(Assemblino.manager.getOption('dependencies'), function(dname){
-            var obj = Assemblino.database.getByName(dname);
-            if (Assemblino.database.userIsPublic(obj.username)){
+        var dependantsList = _.compact(_.map(Assembler.database.searchDependants(Assembler.manager.getObjectName()), function(did){
+            var obj = Assembler.database.get(did);
+            if (!Assembler.database.userIsPublic(obj.username)){
+                return undefined;
+            } else {
+                return obj.username + "" + obj.id;
+            }
+        }));
+        var dependencyList = _.compact(_.map(Assembler.manager.getOption('dependencies'), function(dname){
+            var obj = Assembler.database.getByName(dname);
+            if (!Assembler.database.userIsPublic(obj.username)){
+                return undefined;
+            } else {
+                return obj.username + "" + obj.id;
+            }
+        }));
+        var dependencies = _.compact(_.map(Assembler.manager.getOption('dependencies'), function(dname){
+            var obj = Assembler.database.getByName(dname);
+            if (Assembler.database.userIsPublic(obj.username)){
                 return undefined;
             } else {
                 return obj.id;
             }
         }));
-        dependencies.push(Assemblino.manager.getObjectId());
-        Assemblino.database.makePublic({
+        dependencies.push(Assembler.manager.getObjectId());
+        var path = (Assembler.manager.owner || "") + "/" + Assembler.manager.getOption('folder') + "/" + Assembler.manager.getObjectName();
+        while(path.match(/\/\//igm)){
+            path = path.replace(/\/\//igm, '/');
+        }
+        Assembler.database.makePublic({
             picture: data,
             time: formatedTime(),
-            id: Assemblino.manager.getObjectId(),
+            id: Assembler.manager.getObjectId(),
             dependencies: dependencies,
-            name: Assemblino.manager.getObjectName(),
-            parameters: Assemblino.manager.object.getOptions(),
-            path: (Assemblino.manager.owner || "") + "/" + Assemblino.manager.getOption('folder') + "/" + Assemblino.manager.getObjectName(),
-            text: Assemblino.menus.cleanComment(Assemblino.manager.parseComments(Assemblino.manager.getObjectId()))
+            dependantsList: dependantsList,
+            dependencyList: dependencyList,
+            name: Assembler.manager.getObjectName(),
+            parameters: Assembler.manager.object.getOptions(),
+            path: path,
+            text: Assembler.menus.cleanComment(Assembler.manager.parseComments(Assembler.manager.getObjectId()))
         }, function (s) {
             var status = JSON.parse(s);
             if (status.status != 'ok') {
                 notify('Failed to make component public. \nVerify: \n - Are you logged in?');
             } else {
-                Assemblino.menus.updatableControls.link.setValue(status.link);
-                Assemblino.menus.updatableControls.embed.setValue(status.embed);
-                Assemblino.menus.saveOption('link', status.link);
-                Assemblino.menus.saveOption('embed', status.embed);
-                Assemblino.manager.saveComponent();
+                Assembler.menus.updatableControls.link.setValue(status.link);
+                Assembler.menus.updatableControls.embed.setValue(status.embed);
+                Assembler.menus.saveOption('link', status.link);
+                Assembler.menus.saveOption('embed', status.embed);
+                Assembler.manager.saveComponent();
                 notify(status.link);
             }
         });
@@ -268,7 +294,7 @@ Menu.prototype.showEditorFolder = function () {
     }
     if (isChrome() && window.File && window.FileReader && window.FileList && window.Blob) {
         var transferFolder = _this.FILE_FOLDER.addFolder('Transfer');
-        if (Assemblino.database.getUsername()) {
+        if (Assembler.database.getUsername()) {
             transferFolder.add({'Upload': function () {
                 _this.upload();
             }}, 'Upload');
@@ -276,7 +302,7 @@ Menu.prototype.showEditorFolder = function () {
         transferFolder.add({'Download': function () {
             _this.download();
         }}, 'Download');
-        if (false && Assemblino.database.getUsername()) {
+        if (false && Assembler.database.getUsername()) {
             transferFolder.add({'Download All': function () {
                 _this.downloadAll();
             }}, 'Download All');
@@ -466,16 +492,16 @@ Menu.prototype.toggleCodeMirror = function (show) {
     var current = $codeWrapper.css('display');
     if (show !== undefined && show) {
         $codeWrapper.show();
-        Assemblino.simulator.toggleKeyboardEvents(false);
+        Assembler.simulator.toggleKeyboardEvents(false);
     } else if (show !== undefined && !show) {
         $codeWrapper.hide();
-        Assemblino.simulator.toggleKeyboardEvents(true);
+        Assembler.simulator.toggleKeyboardEvents(true);
     } else if (current == 'none' || show) {
         $codeWrapper.show();
-        Assemblino.simulator.toggleKeyboardEvents(false);
+        Assembler.simulator.toggleKeyboardEvents(false);
     } else {
         $codeWrapper.hide();
-        Assemblino.simulator.toggleKeyboardEvents(true);
+        Assembler.simulator.toggleKeyboardEvents(true);
     }
     setTimeout(function () {
         _this.editor.refresh();
@@ -903,11 +929,11 @@ Menu.prototype.addSettingsControls = function (sim) {
     ec.name.onFinishChange(
         function (value) {
             if (value !== _this.manager.getObjectName()) {
-                Assemblino.database.rename(_this.manager.getObjectName(), value);
+                Assembler.database.rename(_this.manager.getObjectName(), value);
             }
         }
     );
-    if (Assemblino.database.getUsername() && isChrome() && !DESKTOP_OPTIONS.enabled) {
+    if (Assembler.database.getUsername() && isChrome() && !DESKTOP_OPTIONS.enabled) {
         organ.add({'Share': function () {
             _this.makePublic();
         }}, 'Share');
@@ -1091,8 +1117,8 @@ Menu.prototype.toggleInteraction = function (obj) {
 };
 
 Menu.prototype.addArduinoGUI = function () {
-    if (!Assemblino.arduino || !Assemblino.arduino.enabled) return;
-    var arduino = Assemblino.arduino;
+    if (!Assembler.arduino || !Assembler.arduino.enabled) return;
+    var arduino = Assembler.arduino;
     if (!this.display) return;
     arduino.folder = this.folder || this.SETTINGS_FOLDER.addFolder("Arduino");
     arduino.folder.add({Start: function () {
@@ -1101,7 +1127,7 @@ Menu.prototype.addArduinoGUI = function () {
     arduino.folder.add({Path: arduino.boardPath}, 'Path').onChange(
         function (value) {
             arduino.boardPath = value;
-            Assemblino.database.saveInfo('boardPath', value);
+            Assembler.database.saveInfo('boardPath', value);
         }
     );
 };
@@ -1151,7 +1177,7 @@ Menu.prototype.downloadAll = function () {
  */
 Menu.prototype.handleFileSelect = function (evt) {
     try {
-        var _this = Assemblino.menus;
+        var _this = Assembler.menus;
         var key = _this.database.fileKey;
         var files = evt.target.files; // FileList object
         for (var i = 0, f; f = files[i]; i++) {
@@ -1173,7 +1199,7 @@ Menu.prototype.handleFileSelect = function (evt) {
                             obj.settings = JSON.stringify(sets);
                             obj = _this.database.insertComponent(compName, obj.code, obj.settings, null, obj.last_change);
                             _this.addComponentToGui(obj);
-                            _this.database.defineObject(obj.name, Assemblino.objects);
+                            _this.database.defineObject(obj.name, Assembler.objects);
                         }
                     } else if (obj.last_change != cur.last_change) {
                         if (confirm(compName + " version is different from actual. Use this uploaded version?")) {
@@ -1185,7 +1211,7 @@ Menu.prototype.handleFileSelect = function (evt) {
                                     _this.database.updateComponent(obj);
                                 }
                             }
-                            _this.database.defineObject(obj.name, Assemblino.objects);
+                            _this.database.defineObject(obj.name, Assembler.objects);
                         }
                     }
                 });

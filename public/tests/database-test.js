@@ -2,13 +2,13 @@ var tester = new Tester();
 tester.pushTest(
     'Requesting sessionInfo',
     function () {
-        Assemblino.database.sessionInfo.user = '????';
-        console.log('old sessionInfo',Assemblino.database.sessionInfo);
-        Assemblino.database.getSessionInfo(function(){
-            if (Assemblino.database.sessionInfo.user == '????'){
+        Assembler.database.sessionInfo.user = '????';
+        console.log('old sessionInfo',Assembler.database.sessionInfo);
+        Assembler.database.getSessionInfo(function(){
+            if (Assembler.database.sessionInfo.user == '????'){
                 console.warn('Failed to fetch user name. Is user not logged in?');
             }
-            console.log('new sessionInfo',Assemblino.database.sessionInfo);
+            console.log('new sessionInfo',Assembler.database.sessionInfo);
         });
     },
     1000

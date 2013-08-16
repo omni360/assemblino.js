@@ -17,7 +17,7 @@ function Connector() {
         dragColor: 0x666699,
         errorColor: 0xEE2222,
         opacity: 0.6,
-        accept: Assemblino.actuators.getConstraintKeys(),
+        accept: Assembler.actuators.getConstraintKeys(),
         showAxis: true,
         prefer: 'fix',
         touchable: true
@@ -25,7 +25,7 @@ function Connector() {
     var radius = 1;
     var axisFactor = 2;
     var segments = 12;
-    var scale = Assemblino.simulator.connectorRadius || 0.5;
+    var scale = Assembler.simulator.connectorRadius || 0.5;
     options.base = Vec3(options.base);
     options.up = Vec3(options.up).normalize();
     options.front = Vec3(options.front).normalize();
@@ -135,25 +135,25 @@ Connector.prototype.getPosition = function () {
 
 
 Connector.prototype.overColor = function () {
-    var scale = Assemblino.simulator.connectorRadius || 0.5;
+    var scale = Assembler.simulator.connectorRadius || 0.5;
     this.center.material.color.setHex(this.options.overColor);
     this.center.scale.copy(Vec3(1,1,1).multiplyScalar(scale * 1.2));
 };
 
 Connector.prototype.dragColor = function () {
-    var scale = Assemblino.simulator.connectorRadius || 0.5;
+    var scale = Assembler.simulator.connectorRadius || 0.5;
     this.center.material.color.setHex(this.options.dragColor);
     this.center.scale.copy(Vec3(1,1,1).multiplyScalar(scale * 1.2));
 };
 
 Connector.prototype.errorColor = function () {
-    var scale = Assemblino.simulator.connectorRadius || 0.5;
+    var scale = Assembler.simulator.connectorRadius || 0.5;
     this.center.material.color.setHex(this.options.errorColor);
     this.center.scale.copy(Vec3(1,1,1).multiplyScalar(scale * 1.2));
 };
 
 Connector.prototype.outColor = function () {
-    var scale = Assemblino.simulator.connectorRadius || 0.5;
+    var scale = Assembler.simulator.connectorRadius || 0.5;
     this.center.material.color.setHex(this.options.color);
     this.center.scale.copy(Vec3(1,1,1).multiplyScalar(scale));
 };
@@ -218,37 +218,37 @@ Connector.prototype.connectTo = function (fixed, simulator, _this, options, syst
             type: type,
             name: nextName('CONTROL')
         };
-        var defaults = Assemblino.actuators.getDefaults(type);
+        var defaults = Assembler.actuators.getDefaults(type);
         settings = _.extend(settings, defaults);
         settings = _.extend(settings, options);
-        while (Assemblino.manager.hasObject(settings.name, Assemblino.manager.getObjectName())){
+        while (Assembler.manager.hasObject(settings.name, Assembler.manager.getObjectName())){
              settings.name = nextName(settings.name);
         }
-        var types = _.intersection(fixed.options.accept, _this.options.accept, Assemblino.actuators.getConstraintKeys());
+        var types = _.intersection(fixed.options.accept, _this.options.accept, Assembler.actuators.getConstraintKeys());
         types = _.without(types, type);
         settings.type = [type].concat(types.sort());
         //compute best mirror value for the y axis
         settings.mirror = computeBestMirror(fixed, _this);
         delete settings.needConfirm;
         var updateComponent = function() {
-            settings = Assemblino.menus.popMenuValues(settings);
-            if (Assemblino.manager.object.getController(settings.name)){
+            settings = Assembler.menus.popMenuValues(settings);
+            if (Assembler.manager.object.getController(settings.name)){
                 notify('The controller name ' + settings.name + ' is taken. Please choose other one.');
                 return;
             }
-            Assemblino.menus.clearPopMenu();
+            Assembler.menus.clearPopMenu();
             _this.connectTo(fixed, simulator, _this, settings);
             //options = _.extend(options, settings);
         };
         var title = 'Connect: '
             + _this.parentPartKey() + ".[" + (_this.getName() || _this.index()) + "] to "
             + fixed.parentPartKey() + ".[" + (fixed.getName() || fixed.index()) + "]";
-        Assemblino.menus.makePopMenu({
+        Assembler.menus.makePopMenu({
             title: title,
             content: settings,
             buttons: {
                 'Cancel': function () {
-                    Assemblino.menus.clearPopMenu();
+                    Assembler.menus.clearPopMenu();
                     if (_this.interactiveMode) {
                         setTimeout(function () {
                             simulator.stopFreezing();
@@ -264,11 +264,11 @@ Connector.prototype.connectTo = function (fixed, simulator, _this, options, syst
                     newOptions.type = value;
                     newOptions.name = settings.name;
                     newOptions.needConfirm = true;
-                    Assemblino.menus.clearPopMenu();
+                    Assembler.menus.clearPopMenu();
                     _this.connectTo(fixed, simulator, _this, newOptions);
                 }
             },
-            info: Assemblino.actuators.getInfo(type)
+            info: Assembler.actuators.getInfo(type)
         });
         return;
     }
@@ -456,8 +456,8 @@ function connect(options, controllerOptions, system) {
 }
 
 Connector.prototype.showGUI = function (type, clear) {
-    Assemblino.menus.closeFolders();
-    Assemblino.menus.showConnectorGUI(this, type, clear);
+    Assembler.menus.closeFolders();
+    Assembler.menus.showConnectorGUI(this, type, clear);
 };
 
 Connector.prototype.removeParentFromScene = function () {

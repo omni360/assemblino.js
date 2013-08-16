@@ -33,5 +33,5 @@ function StandardServo(){
         });
     }
 
-    return  Assemblino.get('GenericServo4', _.extend(opt, dimensions));
+    return  Assembler.get('GenericServo4', _.extend(opt, dimensions));
 }

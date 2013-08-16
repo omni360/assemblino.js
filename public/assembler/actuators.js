@@ -7,7 +7,7 @@ function Controller(options) {
     this.constraint = null;
     this.settings = _.clone(options || {});
     this.settings.actuator = this.settings.type;
-    this.settings.type = Assemblino.actuators.getConstraintTranslation(this.settings.type);
+    this.settings.type = Assembler.actuators.getConstraintTranslation(this.settings.type);
     var _this = this;
     function objectReady() {
         if (_this.objecta_onScene && _this.objectb_onScene) {
@@ -60,7 +60,7 @@ Controller.prototype.selfDestroy = function(){
 
 Controller.prototype.removeConstraint = function () {
     this.scene.removeConstraint(this.constraint);
-    Assemblino.menus.removeControllerGUI(this);
+    Assembler.menus.removeControllerGUI(this);
     if (this.system){
         this.system.controllers = _.without(this.system.controllers, this);
     }
@@ -79,7 +79,7 @@ function Actuators (controller){
         this.interfaceBuilder && this.interfaceBuilder(controller);
         if (controller.settings.options.gui){
             this.guiBuilder = this.GUI[this.actuator];
-            this.guiBuilder && Assemblino.menus.addActuatorGUI(this, this.guiBuilder);
+            this.guiBuilder && Assembler.menus.addActuatorGUI(this, this.guiBuilder);
         }
         this.info = this.INFO[this.actuator];
     }
@@ -132,7 +132,7 @@ Actuators.prototype.getDefaults = function (actuator){
 };
 
 Actuators.prototype.getInfo = function (actuator){
-    return (Actuators.prototype.INFO[actuator] || "") + "\n\n" + Assemblino.simulator.getScaleInfo();
+    return (Actuators.prototype.INFO[actuator] || "") + "\n\n" + Assembler.simulator.getScaleInfo();
 };
 
 Actuators.prototype.DEFAULTS['slider'] = {
@@ -220,23 +220,23 @@ Actuators.prototype.FUNCTIONS['servo'] = function (controller) {
         settings.angle = value;
         if (!settings.isEnabled) return;
         controller.constraint.setLimits(
-            Assemblino.simulator.scaleAngle(value + settings.angleOffset),
-            Assemblino.simulator.scaleAngle(value+ settings.angleOffset)
+            Assembler.simulator.scaleAngle(value + settings.angleOffset),
+            Assembler.simulator.scaleAngle(value+ settings.angleOffset)
         );
         controller.constraint.enableAngularMotor(
-            Assemblino.simulator.scaleRPM(settings.rpm),
-            Assemblino.simulator.scaleTorque(settings.torque)
+            Assembler.simulator.scaleRPM(settings.rpm),
+            Assembler.simulator.scaleTorque(settings.torque)
         );
     };
     controller.enable = function () {
         settings.isEnabled = true;
         controller.constraint.setLimits(
-            Assemblino.simulator.scaleAngle(settings.angle + settings.angleOffset),
-            Assemblino.simulator.scaleAngle(settings.angle + settings.angleOffset)
+            Assembler.simulator.scaleAngle(settings.angle + settings.angleOffset),
+            Assembler.simulator.scaleAngle(settings.angle + settings.angleOffset)
         );
         controller.constraint.enableAngularMotor(
-            Assemblino.simulator.scaleRPM(settings.rpm),
-            Assemblino.simulator.scaleTorque(settings.torque)
+            Assembler.simulator.scaleRPM(settings.rpm),
+            Assembler.simulator.scaleTorque(settings.torque)
         );
     };
     controller.disable = function () {
@@ -272,29 +272,29 @@ Actuators.prototype.GUI['servo'] = function (controller, folder) {
         if (value === false) {
             settings.isEnabled = false;
             controller.constraint.setLimits(
-                Assemblino.simulator.scaleAngle(settings.low + settings.angleOffset),
-                Assemblino.simulator.scaleAngle(settings.high + settings.angleOffset)
+                Assembler.simulator.scaleAngle(settings.low + settings.angleOffset),
+                Assembler.simulator.scaleAngle(settings.high + settings.angleOffset)
             );
             controller.constraint.disableMotor();
         } else if (value === true) {
             settings.isEnabled = true;
             controller.constraint.setLimits(
-                Assemblino.simulator.scaleAngle(settings.angle + settings.angleOffset),
-                Assemblino.simulator.scaleAngle(settings.angle + settings.angleOffset)
+                Assembler.simulator.scaleAngle(settings.angle + settings.angleOffset),
+                Assembler.simulator.scaleAngle(settings.angle + settings.angleOffset)
             );
             controller.constraint.enableAngularMotor(
-                Assemblino.simulator.scaleRPM(settings.rpm),
-                Assemblino.simulator.scaleTorque(settings.torque)
+                Assembler.simulator.scaleRPM(settings.rpm),
+                Assembler.simulator.scaleTorque(settings.torque)
             );
         } else if (settings.isEnabled) {
             settings.angle = value;
             controller.constraint.setLimits(
-                Assemblino.simulator.scaleAngle(settings.angle + settings.angleOffset),
-                Assemblino.simulator.scaleAngle(settings.angle + settings.angleOffset)
+                Assembler.simulator.scaleAngle(settings.angle + settings.angleOffset),
+                Assembler.simulator.scaleAngle(settings.angle + settings.angleOffset)
             );
             controller.constraint.enableAngularMotor(
-                Assemblino.simulator.scaleRPM(settings.rpm),
-                Assemblino.simulator.scaleTorque(settings.torque)
+                Assembler.simulator.scaleRPM(settings.rpm),
+                Assembler.simulator.scaleTorque(settings.torque)
             );
         }
     }
@@ -335,8 +335,8 @@ Actuators.prototype.FUNCTIONS['motor'] = function (controller) {
         settings.rpm = value;
         if (!settings.isEnabled) return;
         controller.constraint.enableAngularMotor(
-            (settings.reverse ? -1 : 1) * Assemblino.simulator.scaleRPM(settings.rpm),
-            Assemblino.simulator.scaleTorque(settings.torque)
+            (settings.reverse ? -1 : 1) * Assembler.simulator.scaleRPM(settings.rpm),
+            Assembler.simulator.scaleTorque(settings.torque)
         );
     };
     controller.getVelocity = controller.getRPM = function(){
@@ -346,8 +346,8 @@ Actuators.prototype.FUNCTIONS['motor'] = function (controller) {
         controller.isEnabled = true;
         controller.constraint.setLimits(1, 0);
         controller.constraint.enableAngularMotor(
-            (settings.reverse ? -1 : 1) * Assemblino.simulator.scaleRPM(settings.rpm),
-            Assemblino.simulator.scaleTorque(settings.torque)
+            (settings.reverse ? -1 : 1) * Assembler.simulator.scaleRPM(settings.rpm),
+            Assembler.simulator.scaleTorque(settings.torque)
         );
     };
     controller.disable = function () {
@@ -388,8 +388,8 @@ Actuators.prototype.GUI['motor'] = function (controller, folder) {
                 0
             );
             controller.constraint.enableAngularMotor(
-                (settings.reverse ? -1 : 1) * Assemblino.simulator.scaleRPM(settings.rpm),
-                Assemblino.simulator.scaleTorque(settings.torque)
+                (settings.reverse ? -1 : 1) * Assembler.simulator.scaleRPM(settings.rpm),
+                Assembler.simulator.scaleTorque(settings.torque)
             );
         } else if (settings.isEnabled) {
             settings.rpm = value;
@@ -398,8 +398,8 @@ Actuators.prototype.GUI['motor'] = function (controller, folder) {
                 0
             );
             controller.constraint.enableAngularMotor(
-                (settings.reverse ? -1 : 1) * Assemblino.simulator.scaleRPM(settings.rpm),
-                Assemblino.simulator.scaleTorque(settings.torque)
+                (settings.reverse ? -1 : 1) * Assembler.simulator.scaleRPM(settings.rpm),
+                Assembler.simulator.scaleTorque(settings.torque)
             );
         }
     }
@@ -428,10 +428,10 @@ Actuators.prototype.FUNCTIONS['fix'] = function (controller) {
     controller.fix = function () {
         settings.isEnabled = true;
         controller.constraint.setLimits(
-            Assemblino.simulator.scaleAngle(settings.angle),
-            Assemblino.simulator.scaleAngle(settings.angle)
+            Assembler.simulator.scaleAngle(settings.angle),
+            Assembler.simulator.scaleAngle(settings.angle)
         );
-        controller.constraint.enableAngularMotor(0, Assemblino.simulator.scaleKgForce(force));
+        controller.constraint.enableAngularMotor(0, Assembler.simulator.scaleKgForce(force));
     };
     controller.loose = function () {
         settings.isEnabled = false;
@@ -479,7 +479,7 @@ Actuators.prototype.FUNCTIONS['linear'] = function (controller) {
             value,
             value,0,0
         );
-        controller.constraint.enableLinearMotor(settings.velocity, Assemblino.simulator.scaleKgForce(settings.force));
+        controller.constraint.enableLinearMotor(settings.velocity, Assembler.simulator.scaleKgForce(settings.force));
     };
     controller.getPosition = function (){
          return settings.position;
@@ -499,7 +499,7 @@ Actuators.prototype.FUNCTIONS['linear'] = function (controller) {
             settings.position,
             settings.position,0,0
         );
-        controller.constraint.enableLinearMotor(settings.velocity, Assemblino.simulator.scaleKgForce(settings.force));
+        controller.constraint.enableLinearMotor(settings.velocity, Assembler.simulator.scaleKgForce(settings.force));
     };
     controller.disable = function () {
         controller.isEnabled = false;
@@ -535,14 +535,14 @@ Actuators.prototype.GUI['linear'] = function (controller, folder) {
                 settings[position],
                 settings[position], 0, 0
             );
-            controller.constraint.enableLinearMotor(settings.velocity, Assemblino.simulator.scaleKgForce(settings.force));
+            controller.constraint.enableLinearMotor(settings.velocity, Assembler.simulator.scaleKgForce(settings.force));
         } else if (settings.isEnabled) {
             settings[position] = value;
             controller.constraint.setLimits(
                 value,
                 value, 0, 0
             );
-            controller.constraint.enableLinearMotor(settings.velocity, Assemblino.simulator.scaleKgForce(settings.force));
+            controller.constraint.enableLinearMotor(settings.velocity, Assembler.simulator.scaleKgForce(settings.force));
         }
     }
     controller.constraint.setLimits(

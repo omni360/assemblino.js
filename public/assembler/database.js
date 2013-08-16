@@ -63,7 +63,7 @@ var TRACKER = {
         while (this.dependencies.length) {
             this.dependencies.pop();
         }
-        newTracking && (this.tracking = newTracking);
+        this.tracking = newTracking;
     },
     checkRecursion: function (name) {
         if (name != this.tracking) return;
@@ -72,14 +72,14 @@ var TRACKER = {
     checkAvailability: function (dependencies) {
         var missing = [];
         for (var i = 0; i < dependencies.length; i++) {
-            if (!Assemblino.database.getByName(dependencies[i])) missing.push(dependencies[i]);
+            if (!Assembler.database.getByName(dependencies[i])) missing.push(dependencies[i]);
         }
         return missing.join(',\n');
     },
     checkCorrectness: function (dependencies) {
         var failures = [];
         for (var i = 0; i < dependencies.length; i++) {
-            var obj = Assemblino.database.getByName(dependencies[i]);
+            var obj = Assembler.database.getByName(dependencies[i]);
             if (obj && !codeObject(obj.code)) failures.push(dependencies[i]);
         }
         return failures.join(',\n');
@@ -186,7 +186,7 @@ ServedDatabase.prototype.requestOnlyDiffs = function (callback) {
             });
         };
         if (toRequest.length) {
-            Assemblino.toggleSymbol(true, "Requesting changed components...");
+            Assembler.toggleSymbol(true, "Requesting changed components...");
             _this.requestList(toRequest, processRequested);
         } else {
             processRequested("{}");
@@ -334,7 +334,7 @@ ServedDatabase.prototype.searchDependants = function (name, includeName) {
 
 ServedDatabase.prototype.rename = function (name, newName, dependants) {
     //attention, it will not rename content in files, just in the database
-    if (!Assemblino.manager.objectIsMine()){
+    if (!Assembler.manager.objectIsMine()){
         notify("Can't rename not owned object '" + name + "'."); return;
     }
     var debug = false;
@@ -392,9 +392,9 @@ ServedDatabase.prototype.rename = function (name, newName, dependants) {
     target.last_change = Date.now();
     _this.updateComponent(target);
     this.sessionInfo.lastEdited = cleanedName;
-    Assemblino.manager.editor.object.name = cleanedName;
+    Assembler.manager.editor.object.name = cleanedName;
     this.saveSessionInfoToServer();
-    Assemblino.menus.displayCurrentObjectName(cleanedName, this.getUsername(), Assemblino.manager.getOption('folder'));
+    Assembler.menus.displayCurrentObjectName(cleanedName, this.getUsername(), Assembler.manager.getOption('folder'));
 };
 
 ServedDatabase.prototype.updateObjectFromDesktopFile = function (obj) {

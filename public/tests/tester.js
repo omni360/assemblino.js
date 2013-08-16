@@ -13,13 +13,13 @@ Tester.prototype.pushTest = function (name, fun, delay) {
 Tester.prototype.shiftAndTest = function (all) {
     var test = this.sequence.shift();
     if (!test) {
-        Assemblino.menus.showInfo('End of tests');
+        Assembler.menus.showInfo('End of tests');
         console.log('End of tests');
         return;
     }
     var _this = this;
     console.log("+" + test.delay, test.name);
-    Assemblino.menus.showInfo(test.name);
+    Assembler.menus.showInfo(test.name);
     setTimeout(
         function(){
             try {

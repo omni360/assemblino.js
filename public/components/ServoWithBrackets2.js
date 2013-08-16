@@ -45,7 +45,7 @@ function ServoWithBrackets2() {
     }
     system.setOptions(_.clone(opt));
 
-    var servoCase = Assemblino.get('GenericServo4', _.extend(_.extend(_.clone(opt), dimensions), {
+    var servoCase = Assembler.get('GenericServo4', _.extend(_.extend(_.clone(opt), dimensions), {
         name: 'CASE',
         massKg: 0.9 * opt.massKg,
         color: opt.servoColor
@@ -57,7 +57,7 @@ function ServoWithBrackets2() {
         position: [pos.x,sOpt.A/2, pos.z],
         rotation: [Math.PI/2,0,0]
     });
-    var bracket = Assemblino.get('Brackets_U', _.extend(_.clone(opt), {
+    var bracket = Assembler.get('Brackets_U', _.extend(_.clone(opt), {
         width: sOpt.H + sOpt.K + 4 * (sOpt.G - sOpt.K),
         thickness: (sOpt.G - sOpt.K),
         height: 2 * sOpt.A,
@@ -74,7 +74,7 @@ function ServoWithBrackets2() {
 
     if (bracketsSet.match(/case/i)) {
         //fixed bracket
-        var bracket2 = Assemblino.get('Platform', _.extend(_.clone(bOpt), {
+        var bracket2 = Assembler.get('Platform', _.extend(_.clone(bOpt), {
             width: sOpt.J + bOpt.thickness*2,
             height: sOpt.H + sOpt.K + bOpt.thickness * 1.9,
             depth: sOpt.A + bOpt.thickness * 1.9,

@@ -130,7 +130,7 @@ CameraSensor.prototype.setPosition = function () {
 };
 
 CameraSensor.prototype.render = function (renderTarget) {
-    Assemblino.simulator.renderer.render(Assemblino.simulator.scene, this.camera, renderTarget, true);
+    Assembler.simulator.renderer.render(Assembler.simulator.scene, this.camera, renderTarget, true);
 };
 
 function CameraScreen(options) {
@@ -155,7 +155,7 @@ CameraScreen.prototype.addToPart = function (part) {
 };
 
 CameraScreen.prototype.render = function (camera) {
-    Assemblino.simulator.renderer.render(Assemblino.simulator.scene, camera, this.renderTarget, true);
+    Assembler.simulator.renderer.render(Assembler.simulator.scene, camera, this.renderTarget, true);
 };
 
 CameraScreen.prototype.setPosition = function () {

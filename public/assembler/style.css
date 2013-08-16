@@ -8,7 +8,6 @@ body {
 
 #wait {
     white-space: nowrap;
-    font-size: 100%;
     margin: 10px;
 }
 #maintenance {
@@ -160,6 +159,12 @@ body {
 
 #assemblerlogout > a {
     text-decoration: none;
+}
+
+.color {
+    padding: 0px 3px 0px 3px;
+    border-radius: 5px;
+    border: 1px solid black;
 }
 
 .white {
@@ -422,6 +427,10 @@ form label, form input {
     padding: 1%;
 }
 
+#fullList {
+    display: none;
+}
+
 .userImage {
     float: left;
     margin: 2% 0% 2% 0%;
@@ -431,6 +440,13 @@ form label, form input {
     float: left;
     font-style: italic;
     margin: 2% 0% 2% 2%;
+}
+
+.userRelated {
+    float: left;
+    margin: 5% 0% 1% 0%;
+    max-width: 512px;
+    min-width: 80%;
 }
 
 .userText {

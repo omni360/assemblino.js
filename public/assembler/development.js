@@ -23,11 +23,11 @@ DesktopDevelopment.prototype.reassign = function () {
 };
 
 DesktopDevelopment.prototype.validateUser = function (owner) {
-    return Assemblino.database.getUsername() == owner;
+    return Assembler.database.getUsername() == owner;
 };
 
 DesktopDevelopment.prototype.assume = function (name) {
-    return this.object = Assemblino.database.getByName(name);
+    return this.object = Assembler.database.getByName(name);
 };
 
 DesktopDevelopment.prototype.updateLastChange = function (now) {
@@ -35,7 +35,7 @@ DesktopDevelopment.prototype.updateLastChange = function (now) {
 };
 
 DesktopDevelopment.prototype.setAsLastEdited = function () {
-    Assemblino.database.saveInfo('lastEdited', this.object.name);
+    Assembler.database.saveInfo('lastEdited', this.object.name);
 };
 
 DesktopDevelopment.prototype.setCode = function (fun) {
@@ -74,7 +74,7 @@ DesktopDevelopment.prototype.updateHistory = function () {
     var sets = JSON.parse(this.object.settings);
     var pointer = ++sets.pointer;
     var _this = this;
-    Assemblino.manager.localDatabase.insertHistory({
+    Assembler.manager.localDatabase.insertHistory({
         id: _this.object.id,
         name: _this.object.name,
         code: _this.object.code,
@@ -93,7 +93,7 @@ DesktopDevelopment.prototype.update = function () {
             cache: false,
             success: callback,
             error: function () {
-                Assemblino.menus.showInfo('<span class="red">' + 'Failure loading:<br/>' + _this.uri + "</span>");
+                Assembler.menus.showInfo('<span class="red">' + 'Failure loading:<br/>' + _this.uri + "</span>");
             }
         });
     }
@@ -109,17 +109,17 @@ DesktopDevelopment.prototype.update = function () {
         }
         //
         var obj = _this.executeCodeFun();
-        if ((obj || Assemblino.manager.object) instanceof Assemble) {
+        if ((obj || Assembler.manager.object) instanceof Assemble) {
             _this.setProgram();
         } else if (obj) {
             _this.setCode();
         }
-        Assemblino.manager.reload(_this.name, obj || undefined);
+        Assembler.manager.reload(_this.name, obj || undefined);
         if (DESKTOP_OPTIONS.autoSave) {
-            Assemblino.manager.saveComponent();
-            DESKTOP_OPTIONS.flashStatus && Assemblino.menus.flashStatus("Reloaded and Saved from Desktop");
+            Assembler.manager.saveComponent();
+            DESKTOP_OPTIONS.flashStatus && Assembler.menus.flashStatus("Reloaded and Saved from Desktop");
         } else {
-            DESKTOP_OPTIONS.flashStatus && Assemblino.menus.flashStatus("Reloaded from Desktop");
+            DESKTOP_OPTIONS.flashStatus && Assembler.menus.flashStatus("Reloaded from Desktop");
         }
     }
 };

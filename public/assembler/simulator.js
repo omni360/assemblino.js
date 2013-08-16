@@ -155,7 +155,7 @@ PhysicsSimulator.prototype.resetScene = function () {
     this.clearScene();
     this.removeScenario();
     this.scene.replaceWorker();
-    this.scene.pause(!!Assemblino.menus.getOption('pause'));
+    this.scene.pause(!!Assembler.menus.getOption('pause'));
     this.runProgram = run;
     this.stop = paused;
 
@@ -244,7 +244,7 @@ PhysicsSimulator.prototype.addResizeAdapter = function () {
 PhysicsSimulator.prototype.reloadScenario = function (scenarioName, force) {
     scenarioName = scenarioName || this.scenario;
     if (!scenarioName) {
-        scenarioName = Assemblino.menus.getOption('scenario') || SCENARIO;
+        scenarioName = Assembler.menus.getOption('scenario') || SCENARIO;
     }
     var scenario = SCENARIOS[scenarioName];
     if (!scenario) {

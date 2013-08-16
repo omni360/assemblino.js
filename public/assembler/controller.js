@@ -38,7 +38,7 @@ function tT(time){
 MovementController.prototype.setConnector = function (connector) {
     this.connector = connector;
     this.mass = connector.parentPart.mesh._physijs.mass; //  connector.networkMass();
-    var Ku = Assemblino.simulator.scaleKgForce(this.mass);
+    var Ku = Assembler.simulator.scaleKgForce(this.mass);
     //to control position
     //FIXME this works for big simulation times but why ?!!
     this.Kp = Ku * KpT(this.simulator.simulationInterval);
