@@ -78,3 +78,13 @@ function castVec3(object, defaults){
     }
     return object;
 }
+
+function linearTransform(val, minVal, maxVal, minTarget, maxTarget){
+    try {
+        var m = (maxTarget-minTarget)/(maxVal-minVal);
+        var b = maxTarget - maxVal * m;
+        return val * m + b;
+    } catch (e){
+        return undefined;
+    }
+}

@@ -108,10 +108,10 @@ DesktopDevelopment.prototype.update = function () {
             document.body.replaceChild(sc2, sc1);
         }
         //
-        var obj = _this.executeCodeFun();
-        if ((obj || Assembler.manager.object) instanceof Assemble) {
+        var obj;
+        if (Assembler.manager.object instanceof Assemble) {
             _this.setProgram();
-        } else if (obj) {
+        } else if (obj = _this.executeCodeFun()) {
             _this.setCode();
         }
         Assembler.manager.reload(_this.name, obj || undefined);

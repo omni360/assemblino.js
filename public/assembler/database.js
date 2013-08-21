@@ -437,7 +437,8 @@ ServedDatabase.prototype.getDefaultOptions = function () {
         connectorRadius: 0.5,
         scale: 'centimeter',
         link: "",
-        embed: ""
+        embed: "",
+        data: {}
     });
 };
 

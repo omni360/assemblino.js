@@ -54,6 +54,19 @@ OperationsManager.prototype.getOption = function (optionName) {
     }
 };
 
+OperationsManager.prototype.setData = function (key, value) {
+    var data = this.getOption('data');
+    data || (data = {});
+    data[key] = value;
+    this.options['data'] = data;
+};
+
+OperationsManager.prototype.getData = function (key) {
+    var data = this.getOption('data');
+    data || (data = {});
+    return data[key];
+};
+
 OperationsManager.prototype.settings = function (settings) {
     if (settings) {
         if (typeof settings == 'string') {
