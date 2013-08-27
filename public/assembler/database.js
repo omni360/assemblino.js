@@ -17,8 +17,8 @@ function ServedDatabase(staticComponents) {
     };
     this.localDatabase = {};
     this.publicUsers = [
-        'public','Public','Vendor','Commercial','Store','Shop','Database','Abstract','Components','Basic','Geometric',
-        'Learning','Tutorial','Tutorials','Example','Examples', 'Demos','Assembler','Assemblino','Tests','Trash','Robots','Desktop','Local','Server'
+        'public', 'Public', 'Vendor', 'Commercial', 'Store', 'Shop', 'Database', 'Abstract', 'Components', 'Basic', 'Geometric',
+        'Learning', 'Tutorial', 'Tutorials', 'Example', 'Examples', 'Demos', 'Assembler', 'Assemblino', 'Tests', 'Trash', 'Robots', 'Desktop', 'Local', 'Server'
     ];
 }
 
@@ -247,10 +247,10 @@ ServedDatabase.prototype.saveLastEdited = function (value) {
 
 ServedDatabase.prototype.deleteComponent = function (id, prompt) {
     var dependants = this.searchDependants(this.objects[id].name);
-    if (!dependants.length){
+    if (!dependants.length) {
         dependants = "";
     } else {
-        dependants = _.pluck(_.pick(this.objects, dependants),'name').join('\n');
+        dependants = _.pluck(_.pick(this.objects, dependants), 'name').join('\n');
 
     }
     if (prompt && !confirm("Delete '" + this.get(id).name + "'?" + (dependants ? ("\n\nThis will eventually crash the following dependants:\n\n" + dependants) : ""))) {
@@ -306,24 +306,24 @@ ServedDatabase.prototype.userIsPublic = function (user) {
 };
 
 ServedDatabase.prototype.isDesktopFile = function (name) {
-    return this.sessionInfo.desktopFiles.indexOf(name + ".js")>-1;
+    return this.sessionInfo.desktopFiles.indexOf(name + ".js") > -1;
 };
 
 ServedDatabase.prototype.search = function (regx) {
     //search for text or regex and list component names that match
     var _this = this;
-    return _.pluck(_.pick(this.objects,_.filter(_.keys(this.objects), function(id){
+    return _.pluck(_.pick(this.objects, _.filter(_.keys(this.objects), function (id) {
         var obj = _this.get(id);
         return obj.name.match(regx) || obj.code.match(regx) || obj.settings.match(regx);
-    })),'name');
+    })), 'name');
 };
 
 ServedDatabase.prototype.searchDependants = function (name, includeName) {
     //in which other components it appears? check for dependants and return a list of their ids
     var _this = this;
-    return _.filter(_.keys(this.objects), function(id){
+    return _.filter(_.keys(this.objects), function (id) {
         var obj = _this.get(id);
-        if (obj.name===name) {
+        if (obj.name === name) {
             return !!includeName;
         }
         var settings = JSON.parse(obj.settings);
@@ -334,25 +334,26 @@ ServedDatabase.prototype.searchDependants = function (name, includeName) {
 
 ServedDatabase.prototype.rename = function (name, newName, dependants) {
     //attention, it will not rename content in files, just in the database
-    if (!Assembler.manager.objectIsMine()){
-        notify("Can't rename not owned object '" + name + "'."); return;
+    if (!Assembler.manager.objectIsMine()) {
+        notify("Can't rename not owned object '" + name + "'.");
+        return;
     }
     var debug = false;
     var cleanedName = flexibleName(newName);
-    if (name===newName) return;
-    if (!cleanedName){
+    if (name === newName) return;
+    if (!cleanedName) {
         notify("'" + newName + "' is not suitable for replacing '" + name + "'.");
         return;
     }
-    if (this.searchDependants(cleanedName, true).length){
+    if (this.searchDependants(cleanedName, true).length) {
         notify("Operation aborted!\n\n'" + newName + "' already names a database object.");
         return;
     }
     if (!dependants) {
         dependants = _.pick(this.objects, this.searchDependants(name));
     }
-    if (_.keys(dependants).length){
-        var objNames = _.pluck(_.pick(this.objects, _.keys(dependants)),'name').join('\n');
+    if (_.keys(dependants).length) {
+        var objNames = _.pluck(_.pick(this.objects, _.keys(dependants)), 'name').join('\n');
         if (!confirm("'" + name + "' will be renamed to '" + cleanedName + "' affecting \n\n" + objNames)) return;
     } else {
 
@@ -360,14 +361,14 @@ ServedDatabase.prototype.rename = function (name, newName, dependants) {
     var _this = this;
     var codeRegex1 = new RegExp("[\'\"]" + name + "[\'\"]", 'gm'); //new form
     var codeRegex2 = new RegExp("OBJECTS." + name, 'gm'); //old form
-    _.map(dependants, function(obj){
+    _.map(dependants, function (obj) {
         var changed = false;
-        debug && console.log('renaming in: ',obj.name);
+        debug && console.log('renaming in: ', obj.name);
         var code = obj.code;
         debug && console.log('c before: ', code);
         code = code.replace(codeRegex1, "\'" + cleanedName + "\'");
         code = code.replace(codeRegex2, "OBJECTS['" + cleanedName + "']");
-        if (code!==obj.code){
+        if (code !== obj.code) {
             obj.code = code;
             changed = true;
         }
@@ -375,14 +376,14 @@ ServedDatabase.prototype.rename = function (name, newName, dependants) {
         var settings = JSON.parse(obj.settings);
         var options = settings.options;
         var index = options.dependencies.indexOf(name);
-        if (index>-1){
+        if (index > -1) {
             debug && console.log('d before: ', options.dependencies);
             options.dependencies[index] = cleanedName;
             debug && console.log('d after: ', options.dependencies);
             obj.settings = JSON.stringify(settings);
             changed = true;
         }
-        if (changed){
+        if (changed) {
             obj.last_change = Date.now();
             _this.updateComponent(obj);
         }
@@ -397,13 +398,13 @@ ServedDatabase.prototype.rename = function (name, newName, dependants) {
     Assembler.menus.displayCurrentObjectName(cleanedName, this.getUsername(), Assembler.manager.getOption('folder'));
 };
 
-ServedDatabase.prototype.updateObjectFromDesktopFile = function (obj) {
+ServedDatabase.prototype.updateObjectFromLocalFile = function (obj) {
     var name = obj.name;
     if (!this.isDesktopFile(name)) return false;
     var desk = window[DESKTOP_OPTIONS.globalName];
     if (!desk) {
         desk = new DesktopDevelopment(name);
-        window[DESKTOP_OPTIONS.globalName]= desk;
+        window[DESKTOP_OPTIONS.globalName] = desk;
     } else {
         desk.reassign(name);
     }

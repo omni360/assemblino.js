@@ -66,6 +66,9 @@ Controller.prototype.removeConstraint = function () {
     }
 };
 
+Controller.prototype.getName = function(){
+    return this.settings && this.settings.name;
+};
 
 //it does not need to be a class
 function Actuators (controller){

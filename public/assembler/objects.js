@@ -149,8 +149,7 @@ Program.prototype.run = function (event, keysDownList, keysUpList, mouseObj) {
         }
     } catch (e) {
         console.error(e);
-        console.log(this.compiledObject.getName());
-        console.log(this[event]);
+        console.log(event);
     }
 };
 
@@ -382,6 +381,14 @@ Part.prototype.getPhysics = function () {
         ret[key] = vecToArray(ret[key]);
     });
     return ret;
+};
+
+Part.prototype.getPosition = function () {
+    return this.mesh.position.clone();
+};
+
+Part.prototype.setPosition = function (position) {
+    this.setPhysics({position: position});
 };
 
 Part.prototype.add = function (body, options) {

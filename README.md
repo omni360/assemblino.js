@@ -17,7 +17,7 @@ Website
 About
 -------------
 
-Assemblino is a tool for building simple models of robots and mechanisms. It has a graphical 3D interface and performs physical simulations. The name means small assemble, in Italian. Currently an alpha version is available for testing.
+Assemblino is a tool for building simple models of robots and mechanisms. It has a graphical 3D interface and performs physical simulations. The name means small assemble, in Italian. 
 
 It aims at ease of use and is suitable to model abstractions rather than exact layouts.
 

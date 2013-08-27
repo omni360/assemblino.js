@@ -109,12 +109,13 @@ DesktopDevelopment.prototype.update = function () {
         }
         //
         var obj;
-        if (Assembler.manager.object instanceof Assemble) {
+        var fromLocalFile = true;
+        if (JSON.parse(_this.object.settings).objectType.match(/Assemble/igm)) {
             _this.setProgram();
         } else if (obj = _this.executeCodeFun()) {
             _this.setCode();
         }
-        Assembler.manager.reload(_this.name, obj || undefined);
+        Assembler.manager.reload(_this.name, obj || undefined, fromLocalFile);
         if (DESKTOP_OPTIONS.autoSave) {
             Assembler.manager.saveComponent();
             DESKTOP_OPTIONS.flashStatus && Assembler.menus.flashStatus("Reloaded and Saved from Desktop");

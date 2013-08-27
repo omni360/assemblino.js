@@ -241,9 +241,9 @@ OperationsManager.prototype.failureReport = function () {
     return report;
 };
 
-OperationsManager.prototype.editComponent = function (obj, preCompiledObject) {
+OperationsManager.prototype.editComponent = function (obj, preCompiledObject, fromLocalFile) {
     if (!obj) return;
-    if (preCompiledObject === undefined && this.servedDatabase.updateObjectFromDesktopFile(obj)) {
+    if (!fromLocalFile && preCompiledObject === undefined && this.servedDatabase.updateObjectFromLocalFile(obj)) {
         return;
     }
     var _this = this;
@@ -470,9 +470,9 @@ OperationsManager.prototype.deleteComponent = function () {
     }
 };
 
-OperationsManager.prototype.reload = function (name, precompiledObject) {
+OperationsManager.prototype.reload = function (name, precompiledObject, fromLocalFile) {
     var objectDescription = name ? this.servedDatabase.getByName(name) : this.servedDatabase.get(this.getObjectId());
-    this.editComponent(objectDescription, precompiledObject);
+    this.editComponent(objectDescription, precompiledObject, fromLocalFile);
 };
 
 OperationsManager.prototype.removeChild = function (name) {

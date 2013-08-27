@@ -528,7 +528,7 @@ PhysicsSimulator.prototype.loopAndRunPrograms = function (event) {
         this.toggleKeyboardEvents(false);
         return;
     }
-    if (!this.runProgram) return;
+    if (!this.runProgram || this._paused) return;
     var _this = this;
     if (['step', 'beforeDraw', 'afterDraw'].indexOf(event) > -1) {
         this.programs.map(function (p) {

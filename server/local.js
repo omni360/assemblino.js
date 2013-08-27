@@ -73,4 +73,4 @@ console.log("");
 assemblinoBackend = require('./backend-assemblino.js');
 if (arduinoEnabled) require('./backend-arduino.js');
 app.listen(port);
-console.log('listening on http://localhost: ' + port);
+console.log('listening on http://localhost:' + port);

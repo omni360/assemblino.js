@@ -301,8 +301,8 @@ body {
 }
 
 #content, #copyright {
-    font-family: Arial;
-    font-size: 13px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
     word-wrap:break-word;
     padding: 1%;
     margin: auto;
