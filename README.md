@@ -53,7 +53,7 @@ Dependencies
 Many thanks to the developers of the following libraries.
 
 Javascript libraries:
-dat.gui, three.js, ThreeCSG, Physi.js, ammo.js, underscore.js, jQuery, jQuery-UI, CodeMirror, markdown.js
+dat.gui, three.js, ThreeCSG, Physi.js, ammo.js, underscore.js, jQuery, jQuery-UI, CodeMirror, markdown.js, brain.js
 
 Included node modules:
 async, connect-flash,  event,  express,  firmata,  pause,  serialport,  underscore,  util
