@@ -247,7 +247,7 @@ body {
 
 #header {
     width: 100%;
-    background-color: rgba(0,0,0,1);
+    background-color: #000000;
     height: 30px;
 }
 
@@ -300,12 +300,12 @@ body {
     padding-left: 10px;
 }
 
-#content, #copyright {
+#content {
     font-family: Arial, sans-serif;
     font-size: 14px;
     word-wrap:break-word;
     padding: 1%;
-    margin: auto;
+    margin: 0 auto 10% auto;
     width: 90%;
     max-width: 840px;
 }
