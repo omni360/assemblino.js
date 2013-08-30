@@ -200,8 +200,8 @@ Arduino.prototype.setPinMode = function (pin, mode) {
 
     Servo.prototype.attach = function (guiController, options) {
         options = _.defaults(options || {}, {
-            scale: 180,
-            offset: 91
+            scale: 1,
+            offset: 0
         });
         this.detach();
         if (guiController instanceof Controller) {

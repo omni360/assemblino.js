@@ -120,7 +120,7 @@ Menu.prototype.toggleUserUXControls = function (show, mine) {
             fileFolder.toggleController(name, false, true);
         });
     }
-    this.INTERACTION_FOLDER.toggleController('Update from Desktop', this.database.isDesktopFile(this.manager.getObjectName()), true);
+    this.INTERACTION_FOLDER.toggleController('Update from File', this.database.isDesktopFile(this.manager.getObjectName()), true);
     //this.EDIT_FOLDER.toggleController('Code Editor', !this.database.isDesktopFile(this.manager.getObjectName()), true);
 
 };
@@ -944,9 +944,9 @@ Menu.prototype.addSettingsControls = function (sim) {
     this.RENDER_FOLDER = this.RENDER_FOLDER || this.SETTINGS_FOLDER.addFolder('Simulation');
     var scenarioFolder = this.SETTINGS_FOLDER.addFolder('World');
     if (DESKTOP_OPTIONS.enabled) {
-        ec.reloadDesk = this.INTERACTION_FOLDER.add({'Update from Desktop': function () {
+        ec.reloadDesk = this.INTERACTION_FOLDER.add({'Update from File': function () {
             window[DESKTOP_OPTIONS.globalName].update();
-        }}, 'Update from Desktop');
+        }}, 'Update from File');
     }
     ec.pause = this.INTERACTION_FOLDER.add({Pause: false}, 'Pause');
     ec.pause.onChange(
@@ -1232,5 +1232,10 @@ Menu.prototype.upload = function () {
     $(node).unbind("change");
     node.addEventListener("change", this.handleFileSelect, false);
     node.dispatchEvent(evt);
+};
+
+Menu.prototype.getStructure = function(folder){
+    console.log(folder.folders);
+    console.log(folder.controllers);
 };
 
