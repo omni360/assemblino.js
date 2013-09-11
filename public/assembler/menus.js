@@ -1054,6 +1054,18 @@ Menu.prototype.clearContext = function () {
     this.CONTEXT_MENU.clear();
 };
 
+Menu.prototype.addObjectGUI = function (object, args) {
+    if (!this.display) return;
+    if (!this.CONTROLS_FOLDER) {
+        this.CONTROLS_FOLDER = this.INTERACTION_FOLDER.addFolder('Controllers');
+        this.CONTROLS_FOLDER.open();
+    }
+    if (!this.CONTROLS_FOLDER.getFolder(object.getName())){
+        this.CONTROLS_FOLDER.addFolder(object.getName());
+    }
+    return this.CONTROLS_FOLDER.add.apply(this.CONTROLS_FOLDER, args);
+};
+
 Menu.prototype.clearConstraintsGUI = function () {
     if (!this.display) return;
     if (this.CONTROLS_FOLDER) {

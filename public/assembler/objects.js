@@ -505,7 +505,9 @@ Part.prototype.removeConnectorsExcept = function (except) {
 
 Part.prototype.addConnector = function (options) {
     options || (options = {});
-    this.add(new Connector(options));
+    var conn = new Connector(options);
+    this.add(conn);
+    return conn;
 };
 
 Part.prototype.addBody = function (options) {
@@ -651,6 +653,11 @@ Part.prototype.setCollisionMask = function (group, mask) {
     this.mesh._physijs.collision_masks = [group, mask];
 };
 
+
+Part.prototype.addGUIController = function (){
+    return Assemblino.menus.addObjectGUI(this, arguments);
+};
+
 function System() {
     this.isCompiled = true;
     this.objectType = "System";
@@ -668,7 +675,7 @@ function System() {
 //get some methods from Part
 _.extend(System.prototype, _.pick(Part.prototype, [
     'setName', 'getName', 'getKey' , 'setPath', 'getPath', 'containsPath', 'setSettings',
-    'getSettings', 'getOptions', 'setOptions', 'extendOptions', 'addProgram']
+    'getSettings', 'getOptions', 'setOptions', 'extendOptions', 'addProgram','addGUIController']
 ));
 
 System.prototype.selfDestroy = function () {
@@ -931,7 +938,8 @@ _.extend(Assemble.prototype, _.pick(Part.prototype, [
 //get some methods from System
 _.extend(Assemble.prototype, _.pick(System.prototype, [
     'selfDestroy', 'makeKey', 'setPhysics', 'join', 'connect', 'prependToPath', 'addToScene', 'add',
-    'addController', 'getController', 'getPart', 'getPartByKey', 'getPartByName', 'getChildByKey', 'partsList'
+    'addController', 'getController', 'getPart', 'getPartByKey', 'getPartByName', 'getChildByKey', 'partsList',
+    'addGUIController'
 ]));
 
 Assemble.prototype.newContent = function (replace) {
