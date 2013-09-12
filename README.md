@@ -10,9 +10,12 @@ Modeling and simulation for robots and mechanisms
 Synospsis
 ---------
 
-With assemblino.js you can use Javascript to build models or robots, program them, and directly connect the model to an Arduino board to control
-the real robot with the same program you model uses. This also provides to the real robot an artificial environment where such a robot can
-test actions before doing them, or an environment where artificial intelligence algorithms are running. All of this should be easy.
+With Assemblino you can build a model of a robot selecting **components from the database**, connecting them with **drag and drops**, and use **JavaScript** to program them,
+with the possibility to directly connect the model to an **Arduino board** to control the real robot with the same program you model uses.
+Assemblino also provides to the real robot a **virtual environment** where such a robot can
+test actions before doing them, or learn with **artificial intelligence** algorithms.
+
+**All of this should be easy. That's the goal.**
 
 Website
 -----------
