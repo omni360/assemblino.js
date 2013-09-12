@@ -598,6 +598,11 @@ PhysicsSimulator.prototype.listenToKeyboardEvents = function () {
         if (!_this.allowKeyboardEvents) return;
         if (keyRelations[evt.keyCode]) {
             _this.keysUp[evt.keyCode] = keyRelations[evt.keyCode];
+            keyDownKeyCode = specialKeys[evt.keyCode] ? null : evt.keyCode;
+            if (keyDownKeyCode){
+                delete _this.keysDown[keyDownKeyCode];
+            }
+            delete _this.keysDown[evt.keyCode];
             keyDownKeyCode = null;
         }
     });

@@ -938,7 +938,7 @@ _.extend(Assemble.prototype, _.pick(Part.prototype, [
 //get some methods from System
 _.extend(Assemble.prototype, _.pick(System.prototype, [
     'selfDestroy', 'makeKey', 'setPhysics', 'join', 'connect', 'prependToPath', 'addToScene', 'add',
-    'addController', 'getController', 'getPart', 'getPartByKey', 'getPartByName', 'getChildByKey', 'partsList',
+    'addController', 'getController', 'getPart', 'getPartByKey', 'getPartByName', 'getChildByKey', 'partsList', 'getChild',
     'addGUIController'
 ]));
 
