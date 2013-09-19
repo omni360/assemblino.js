@@ -1060,10 +1060,12 @@ Menu.prototype.addObjectGUI = function (object, args) {
         this.CONTROLS_FOLDER = this.INTERACTION_FOLDER.addFolder('Controllers');
         this.CONTROLS_FOLDER.open();
     }
-    if (!this.CONTROLS_FOLDER.getFolder(object.getName())){
-        this.CONTROLS_FOLDER.addFolder(object.getName());
+    var folder = this.CONTROLS_FOLDER.getFolder(object.getName());
+    if (!folder){
+        folder = this.CONTROLS_FOLDER.addFolder(object.getName());
+        folder.open();
     }
-    return this.CONTROLS_FOLDER.add.apply(this.CONTROLS_FOLDER, args);
+    return folder.add.apply(folder, args);
 };
 
 Menu.prototype.clearConstraintsGUI = function () {

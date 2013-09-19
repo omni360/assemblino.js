@@ -367,7 +367,12 @@ var console = console || {};
         worldTransform.setOrigin(castVector(description.position, _vectors[1]));
         worldTransform.setRotation(castQuaternion(description.rotation, _quaternions[1]));
 
-        motionState = new Ammo.btDefaultMotionState(worldTransform); // #TODO: btDefaultMotionState supports center of mass offset as second argument - implement
+        var centerOfMassOffset;
+        if (description.centerOfMassOffset){
+            centerOfMassOffset = new Ammo.btTransform;
+            centerOfMassOffset.setOrigin(castVector(description.centerOfMassOffset));
+        }
+        motionState = new Ammo.btDefaultMotionState(worldTransform, centerOfMassOffset); // #TODO: btDefaultMotionState supports center of mass offset as second argument - implement
         rbInfo = new Ammo.btRigidBodyConstructionInfo(description.mass, motionState, shape, localInertia);
 
         if (description.materialId !== undefined && _materials[ description.materialId ]) {

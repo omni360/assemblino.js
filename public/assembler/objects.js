@@ -653,6 +653,12 @@ Part.prototype.setCollisionMask = function (group, mask) {
     this.mesh._physijs.collision_masks = [group, mask];
 };
 
+Part.prototype.centerOfMassOffset = function (centerOfMassOffset) {
+    if (centerOfMassOffset){
+        this.mesh._physijs.centerOfMassOffset = centerOfMassOffset;
+    }
+    return this.mesh._physijs.centerOfMassOffset;
+};
 
 Part.prototype.addGUIController = function (){
     return Assemblino.menus.addObjectGUI(this, arguments);

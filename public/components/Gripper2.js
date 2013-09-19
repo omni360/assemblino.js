@@ -1,16 +1,18 @@
-function Gripper(){
+function Gripper2(){
     /*
      Simple Gripper featuring a GUI controller and programming API:
 
      .close()
-
+     <br />
      .open()
-
+     <br />
      .distance(value)
+
+     The fingers small protuberances at the end (nails?!) which may improve grasping
      */
     var options = _.defaults(arguments[0] || {}, {
         name: nextName('Gripper'), //name should always be somehow defined
-        color: 0x65095,
+        color: 0x71ac82,
         force: 5,
         size: 5,
         thickness: 0.5,
@@ -64,7 +66,16 @@ function Gripper(){
         y: options.size/2 + thickness,
         x: -options.size/2
     });
-
+    wing1.addBody({
+        material: 'plastic',
+        shape: 'box',
+        color: options.color,
+        width: thickness,
+        depth: options.depth,
+        height: thickness,
+        x: thickness/2,
+        y: options.size/2 - thickness/2
+    });
     var toBase1 = wing1.addConnector({
         name: 'toBase',
         base: [0, -options.size/2, 0],
@@ -82,10 +93,19 @@ function Gripper(){
         width: thickness,
         depth: options.depth,
         height: options.size,
-        y: options.size/2 + thickness,
+        y: options.size/2 + thickness/2,
         x: options.size/2
     });
-
+    wing2.addBody({
+        material: 'plastic',
+        shape: 'box',
+        color: options.color,
+        width: thickness,
+        depth: options.depth,
+        height: thickness,
+        x: -thickness/2,
+        y: options.size/2 - thickness/2
+    });
     var toBase2 = wing2.addConnector({
         name: 'toBase',
         base: [0, -options.size/2, 0],
@@ -96,19 +116,20 @@ function Gripper(){
     system.add(base);
     system.add(wing1);
     system.add(wing2);
+    var realMinimum = thickness/2;
     system.setDistance = function(v){
         var controls = [system.getController('w1'), system.getController('w2')];
         controls[0].setPosition(options.size/2-thickness/2-v);
         controls[1].setPosition(options.size/2-thickness/2-v);
     };
     system.open = function(){
-         this.setDistance(options.size/2-thickness/2);
+        this.setDistance(options.size/2-thickness/2);
     };
     system.close = function(){
-        this.setDistance(0);
+        this.setDistance(realMinimum);
     };
     setTimeout(function(){
-        var c = system.addGUIController({distance: options.size/2-thickness/2},'distance', 0, options.size/2-thickness/2);
+        var c = system.addGUIController({distance: options.size/2-thickness/2},'distance', realMinimum, options.size/2-thickness/2);
         c.onChange(function(v){
             system.setDistance(v);
         });

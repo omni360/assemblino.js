@@ -15,7 +15,7 @@ function Tube() {
         length: 4,
         diameter: 8,
         thickness: 1,
-        segments: 12,
+        segments: 16,
         friction: 0.6,
         restitution: 0.3,
         opacity: 1
@@ -51,6 +51,7 @@ function Tube() {
     }
 
     part.mesh.position.y = options.length / 2;
+
     part.addConnector({
         name: prefix + 'top',
         base: [0, options.length / 2, 0]
