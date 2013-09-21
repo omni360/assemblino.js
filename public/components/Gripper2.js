@@ -122,11 +122,20 @@ function Gripper2(){
         controls[0].setPosition(options.size/2-thickness/2-v);
         controls[1].setPosition(options.size/2-thickness/2-v);
     };
+    system.getDistance = function(){
+        return -system.getController('w1').getPosition()-(options.size/2-thickness/2);
+    };
     system.open = function(){
         this.setDistance(options.size/2-thickness/2);
     };
     system.close = function(){
         this.setDistance(realMinimum);
+    };
+    system.getMinimum = function(){
+        return realMinimum;
+    };
+    system.getMaximum = function(){
+        return options.size/2-thickness/2;
     };
     setTimeout(function(){
         var c = system.addGUIController({distance: options.size/2-thickness/2},'distance', realMinimum, options.size/2-thickness/2);

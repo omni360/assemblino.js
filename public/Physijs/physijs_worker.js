@@ -370,7 +370,7 @@ var console = console || {};
         var centerOfMassOffset;
         if (description.centerOfMassOffset){
             centerOfMassOffset = new Ammo.btTransform;
-            centerOfMassOffset.setOrigin(castVector(description.centerOfMassOffset));
+            centerOfMassOffset.setOrigin(castVector(description.centerOfMassOffset, _vectors[2]));
         }
         motionState = new Ammo.btDefaultMotionState(worldTransform, centerOfMassOffset); // #TODO: btDefaultMotionState supports center of mass offset as second argument - implement
         rbInfo = new Ammo.btRigidBodyConstructionInfo(description.mass, motionState, shape, localInertia);

@@ -17,8 +17,9 @@ function ServedDatabase(staticComponents) {
     };
     this.localDatabase = {};
     this.publicUsers = [
-        'public', 'Public', 'Vendor', 'Commercial', 'Store', 'Shop', 'Database', 'Abstract', 'Components', 'Basic', 'Geometric',
-        'Learning', 'Tutorial', 'Tutorials', 'Example', 'Examples', 'Demos', 'Assembler', 'Assemblino', 'Tests', 'Trash', 'Robots', 'Desktop', 'Local', 'Server'
+        'public','Public','Vendor','Commercial','Store','Shop','Database','Abstract','Components','Basic','Geometric',
+        'Learning','Tutorial','Tutorials','Example','Examples', 'Demos','Assembler','Assemblino','Tests','Trash','Robots','Desktop','Local','Server',
+        'Playground'
     ];
 }
 

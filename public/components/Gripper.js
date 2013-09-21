@@ -96,19 +96,29 @@ function Gripper(){
     system.add(base);
     system.add(wing1);
     system.add(wing2);
+    var realMinimum = 0;
     system.setDistance = function(v){
         var controls = [system.getController('w1'), system.getController('w2')];
         controls[0].setPosition(options.size/2-thickness/2-v);
         controls[1].setPosition(options.size/2-thickness/2-v);
     };
+    system.getDistance = function(){
+        return -system.getController('w1').getPosition()-(options.size/2-thickness/2);
+    };
     system.open = function(){
-         this.setDistance(options.size/2-thickness/2);
+        this.setDistance(options.size/2-thickness/2);
     };
     system.close = function(){
-        this.setDistance(0);
+        this.setDistance(realMinimum);
+    };
+    system.getMinimum = function(){
+        return realMinimum;
+    };
+    system.getMaximum = function(){
+        return options.size/2-thickness/2;
     };
     setTimeout(function(){
-        var c = system.addGUIController({distance: options.size/2-thickness/2},'distance', 0, options.size/2-thickness/2);
+        var c = system.addGUIController({distance: options.size/2-thickness/2},'distance', realMinimum, options.size/2-thickness/2);
         c.onChange(function(v){
             system.setDistance(v);
         });

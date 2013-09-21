@@ -15,25 +15,12 @@ with the possibility to directly connect the model to an **Arduino board** to co
 Assemblino also provides to the real robot a **virtual environment** where such a robot can
 test actions before doing them, or learn with **artificial intelligence** algorithms.
 
-**All of this should be easy. That's the goal.**
-
 Website
 -----------
 
 [assemblino.com](https://assemblino.com)
 
 [components and examples](https://assemblino.com/explorer.html)
-
-About
--------------
-
-Assemblino is a tool for building simple models of robots and mechanisms. It has a graphical 3D interface and performs physical simulations. The name means small assemble, in Italian. 
-
-It aims at ease of use and is suitable to model abstractions rather than exact layouts.
-
-In the database there are some of the common components used for robot construction, such as servo motors, linear motors, wheels and plates.
-
-The simulation of actuators behavior is done primarily with sliders. With some knowledge of JavaScript you can also automate and program the models, process keyboard and mouse events.
 
 Requirements
 ------
@@ -57,7 +44,7 @@ http://localhost:35689
 
 Use the menu File to open some of the built-in components and assembles.
 
-Dependencies
+Included Dependencies
 -------
 
 Many thanks to the developers of the following libraries.
@@ -70,17 +57,4 @@ async, connect-flash,  event,  express,  firmata,  pause,  serialport,  undersco
 
 Arduino sketch:
 StandardFirmata.ino
-
-Screenshots
-------------
-
-![assembler1](https://f.cloud.github.com/assets/2943816/968189/a58371de-0597-11e3-9919-e2f2e633179a.jpg)
-![assembler4](https://f.cloud.github.com/assets/2943816/968191/a58a6e1c-0597-11e3-9319-5a73c076c1db.jpg)
-![assembler3](https://f.cloud.github.com/assets/2943816/968192/a58f1476-0597-11e3-8130-cb8e869bc307.jpg)
-![assembler5](https://f.cloud.github.com/assets/2943816/968193/a592bd56-0597-11e3-9afd-816f90dff50d.jpg)
-![assembler6](https://f.cloud.github.com/assets/2943816/968194/a59483e8-0597-11e3-9d3e-548f92092e67.jpg)
-![assembler7](https://f.cloud.github.com/assets/2943816/968195/a59d1b84-0597-11e3-9661-adbcc0c6dea2.jpg)
-![assembler9](https://f.cloud.github.com/assets/2943816/968197/a5a38014-0597-11e3-8ac3-c3ab4f88aeb2.jpg)
-![assembler11](https://f.cloud.github.com/assets/2943816/968199/a5ae9030-0597-11e3-8e23-3b960e477e40.jpg)
-![assembler12](https://f.cloud.github.com/assets/2943816/968200/a5b6bbc0-0597-11e3-8c32-a06a358ddcae.jpg)
 
